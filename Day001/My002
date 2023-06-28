@@ -1,0 +1,15 @@
+namespace My002
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //500-200
+            int a;
+            int b;
+            a = 500;
+            b = 200;
+            Console.WriteLine(a - b);
+        }
+    }
+}
