@@ -1,0 +1,19 @@
+namespace Whileapp
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // 1 ~200까지
+            int i = 1;
+
+            while(i <= 200) // 조건
+            {
+                Console.Write(i + " ");
+                // i = i + 1;
+                //i += 1;
+                i++; //후치연사자, 증가감
+            }
+        }
+    }
+}
