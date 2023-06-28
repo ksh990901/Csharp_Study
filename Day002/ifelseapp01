@@ -1,0 +1,48 @@
+namespace ifelseapp01
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //int number = 62;
+            //입력부 만들기
+            //.cs 소스파일
+            //컴파일러 cc
+            //.exe 실행파일(바이너리 파일)
+            // 하이브리드 c/c++ Full c
+            // 문제 정수를 1개 입력 받습니다. 음수, 양수 홀수 짝수출력 hint) if else 문 %2==0 짝스
+
+            //if (number%2 != 0)
+            {
+                //Console.WriteLine("홀수입니다.");
+            } //else
+            {
+                //Console.WriteLine("짝수입ㄴ다.");
+                    }
+            Console.Write("숫자를 입력하세요 : ");
+            string input = Console.ReadLine();
+            int number = int.Parse(input) ;
+
+            if(number<0)
+            {
+                Console.WriteLine("음수");
+             }
+            else if(number>0)   //연속으로 if문
+            {
+                Console.WriteLine("양수");
+            }
+            else 
+            {
+                Console.WriteLine("0");
+                    }
+            if(number%2==0) 
+            {
+                Console.WriteLine("짝수");
+            }
+            else 
+            {
+                Console.WriteLine("홀수");
+                    }
+        }
+    }
+}
