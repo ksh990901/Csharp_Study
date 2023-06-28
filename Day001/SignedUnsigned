@@ -1,0 +1,21 @@
+namespace SignedUnsigned
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            byte a = 255;
+            sbyte b = (sbyte)a;
+
+            Console.WriteLine(b);
+
+            uint c = uint.MaxValue;//4294967295
+            int d = int.MinValue;
+            Console.WriteLine($"{c} {d}");
+
+            float e = 3.141692F;
+            double f = 3.141592;
+
+        }
+    }
+}
