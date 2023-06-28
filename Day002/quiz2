@@ -1,0 +1,22 @@
+namespace quiz2
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            char a = '반';
+            char b = '가';
+            char c = '워';
+            char[] greet = new char[3];
+            greet[0] = '반';
+            greet[1] = '가';
+            greet[2] = '워';
+
+            for (int i = 0; i < 3; i++) 
+            {
+                Console.WriteLine(greet[i]); 
+            }
+            string greet2 = "행복\n하세\n요"
+        }
+    }
+}
