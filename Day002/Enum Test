@@ -1,0 +1,16 @@
+namespace Enum_Test
+{
+    class Program
+    {
+        //멤버변수
+        enum DigitalResult { Yes, No, CANCEL, CONFIRM, OK }
+        static void Main(string[] args)
+        {
+            Console.WriteLine(DigitalResult.Yes);
+            Console.WriteLine((int)DigitalResult.Yes);
+
+            Console.WriteLine(DigitalResult.OK);
+            Console.WriteLine((int)DigitalResult.OK);
+        }
+    }
+}
