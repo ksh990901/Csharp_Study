@@ -1,0 +1,19 @@
+namespace My003
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //가로(width), 세로(height)를 입력받아 넓이를 구합시다.
+            //단, 입력은 정수로 계산될 범위까지 들어옵니다.
+            // 1. 변수선언 & 입력
+            // 2. 로직
+            // 3. 출력
+            int a, b;
+            a = Int32.Parse(Console.ReadLine());
+            b = Int32.Parse(Console.ReadLine());
+            int result = a * b;
+            Console.WriteLine(result);
+        }
+    }
+}
