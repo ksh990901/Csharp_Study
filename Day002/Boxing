@@ -1,0 +1,24 @@
+namespace Boxing
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int a = 123;
+            object b = (object)a; // Boxing
+            int c = (int)b; // Unboxing
+
+            Console.WriteLine(a);
+            Console.WriteLine(b);
+            Console.WriteLine(c);
+            
+            double x = 3.1414213;
+            object y = x;  //Boxing 기본타입에서 객체로
+            double z = (double)y;    //Unboxing   객체에서 기본타입으로
+
+            Console.WriteLine(x);
+            Console.WriteLine(y);
+            Console.WriteLine(z);
+        }
+    }
+}
