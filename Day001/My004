@@ -1,0 +1,20 @@
+namespace My004
+{
+    class Program
+    {
+        static void hello()
+        {
+            Console.WriteLine("안녕하세요.");
+        }
+       void Hello2()
+        {
+            Console.WriteLine("반갑습니다.");
+                }
+        static void Main(string[] args)
+        {
+            hello();
+            Program p = new Program();
+            p.Hello2();
+        }
+    }
+}
