@@ -1,0 +1,21 @@
+namespace Characterar
+{
+     class Program
+    {
+        static void Main(string[] args)
+        {
+            char a = '안';
+            char b = '녕';
+            string str = "안녕";
+
+            Console.WriteLine($"{a}{b}");
+            Console.WriteLine(str);
+
+            Console.WriteLine();
+
+            string multi01 = "안녕";
+
+                Console.Write(multi01);
+        }
+    }
+}
