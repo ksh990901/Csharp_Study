@@ -1,0 +1,14 @@
+namespace quiz1
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+           int a = Int32.Parse(Console.ReadLine());
+            int result = 2023 - a + 1;
+           
+            Console.WriteLine(result);
+
+        }
+    }
+}
