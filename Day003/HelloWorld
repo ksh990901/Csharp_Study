@@ -1,0 +1,36 @@
+namespace MyHelloWorld
+{
+     class MainClass
+    {
+        static void Main(string[] args)
+        {
+            //한줄주석
+            /* 멀티라인 주석
+             * Console.WriteLine("Hello World");
+             */
+            //삼각형의 넓이를 구하시오
+            // 공식 = 가로 * 세로 / 2.0
+            // console.readline() --> 문자열로 읽어짐
+
+            // 1.변수
+            //int width, height;
+            // double area;
+            //1.5 입력
+            // width = int.Parse(Console.ReadLine());
+            //height = int.Parse(Console.ReadLine());
+            //2. 로직
+            // area = (double)(width * height) / 2.0;
+            //3. 출력
+            // Console.WriteLine(area);
+            //int C;
+            //double F;
+            //C = int.Parse(Console.ReadLine());
+            //F = (double)(9.0 / 5.0) * C + 32.0;
+            //Console.WriteLine(F);
+            int a, b;
+            a = int.Parse(Console.ReadLine());
+            b = int.Parse(Console.ReadLine());
+            
+            Console.WriteLine($"{a} {b}");
+          }
+    }
