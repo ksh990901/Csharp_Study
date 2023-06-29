@@ -1,0 +1,37 @@
+namespace StirngApp01
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string greeting = "Good Morning";
+
+            WriteLine(greeting);
+            Console.WriteLine();
+
+            //IndexOf 
+            Console.WriteLine($"{greeting.IndexOf("Morning")}");
+            Console.WriteLine($"{greeting.IndexOf("d")}");
+
+            //LastIndexOf()
+            Console.WriteLine($"{greeting.LastIndexOf("Good")}");
+            Console.WriteLine($"{greeting.LastIndexOf("o")}");
+
+            //StartWith()
+            Console.WriteLine($"Startswith : {greeting.StartsWith("Good")}");
+            Console.WriteLine($"Startswith : {greeting.StartsWith("Morning")}");
+
+            //EndsWith()
+            Console.WriteLine($"Endswith : {greeting.EndsWith("Good")}");
+            Console.WriteLine($"Endswith : {greeting.EndsWith("Morning")}");
+
+            //Contains()
+            Console.WriteLine($"Contains Evening : {greeting.Contains("Evening")}");
+            Console.WriteLine($"Contains Evening : {greeting.Contains("Morning")}");
+
+            //Replace()
+            Console.WriteLine($"Replace Evening : {greeting.Replace("Morning", "Evening")}");
+            Console.WriteLine($"Replace Evening : {greeting.Replace("Good", "Bad")}");
+        }
+    }
+}
