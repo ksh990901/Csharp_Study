@@ -1,0 +1,38 @@
+namespace whiletest02
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //100 ~ 1 모두 1씩 마이너스 되면서 출력하라
+            //for(초기값; 조건; 증가감)
+            //for(int i = 100;  i > 0; i--)
+            //{
+            //   Console.WriteLine(i);
+            //}
+            //for (int i = 2;  i <= 100; i++)
+            //{
+            //    if (i%2 == 0 )
+            //    {
+            //        Console.WriteLine(i);
+            //    }
+            //}
+            //int i = 0;
+            //while (i < 100)
+            //{
+            //    if (i % 2 != 0)
+            //    {
+            //        Console.WriteLine(i);
+            //    }
+            //    i++;
+            //}
+            for(int i  = 100; i > 0;  i--)
+            {
+                if(i%13 == 0)
+                {
+                    Console.WriteLine(i);
+                }
+            }
+        }
+    }
+}
