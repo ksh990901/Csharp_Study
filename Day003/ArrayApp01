@@ -1,0 +1,49 @@
+ //int a_1 = 1;
+            //int b_2 = 2;
+            //int c_3 = 3;
+            //int[] score = new int[3];
+
+            //score[0] = 1;
+            //score[1] = 2;
+            //score[2] = 3;
+
+            //Console.WriteLine(score[0]);
+            //Console.WriteLine(score[1]);
+            //Console.WriteLine(score[2]);
+
+            //char[] ch = new char[3];
+
+            //ch[0] = 'a';
+            //ch[1] = 'b';
+            //ch[2] = 'c';
+
+            //Console.WriteLine(ch[0]);
+            //Console.WriteLine(ch[1]);
+            //Console.WriteLine(ch[2]);
+
+            //int[] arr = new int[100];
+            ////입력
+            //for(int i  = 0; i < 100; i++)
+            //    arr[i] = i + 1;
+
+            ////출력
+            //for (int j=0; j < arr.Length; j++)
+            //{
+            //    Console.WriteLine(arr[j]+ " ");
+            //}
+
+            //arr 이름의 5개 요소가 있는 정수형 배열을 만듭니다. 단, 배열 요소에는 홀수 1 3 5 7 9 값이 들어 갑니다. 배열에값을 담은 후 큰솔 화면에 출력해 주세요.
+            int[] arr = new int[5];
+
+            for (int i = 0, cnt = 1; i < arr.Length; i++, cnt += 2)
+            {
+                arr[i] = cnt;
+            }
+            for(int i = 0; i < arr.Length; i++)
+            {
+                Console.WriteLine(arr[i]);
+            }
+           
+        }
+    }
+}
