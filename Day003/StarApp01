@@ -1,0 +1,68 @@
+amespace StarApp01
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            Console.WriteLine("1단계");
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = 0; j <= i; j++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+            }
+
+
+            Console.WriteLine("2단계");
+
+            for (int i = 5; i > 0; i--)
+            {
+                for (int j = i; j > 0; j--)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("4단계");
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = i; j > 0; j--)
+                {
+                    Console.Write(" ");
+                }
+                for (int k = i; k < 5; k++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+
+
+            }
+
+            Console.WriteLine("3단계");
+
+            for (int i = 0; i < 5; i++)
+            {
+                for (int j = (5 - i - 1); j > 0; j--)
+                {
+                    Console.Write(" ");
+                }
+                for (int k = 0; k <= i; k++)
+                {
+                    Console.Write("*");
+                }
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("5단계");
+
+
+        }
+    }
+}
