@@ -1,0 +1,17 @@
+namespace StringApp02
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine($"ToLower : {"ABC".ToLower()}");
+            Console.WriteLine($"ToUpper : {"abc".ToUpper()}");
+
+            Console.WriteLine("Happy Friday!".Insert(5, " Sunny"));
+            Console.WriteLine("I Don't Love You".Remove(2, 6));
+            Console.WriteLine("    ABC   ");
+            Console.WriteLine("    ABC   ".Trim());
+        }
+        
+    }
+}
