@@ -1,0 +1,41 @@
+namespace MethodQuiz01
+{
+    internal class Program
+    {
+        static int Plus(int a, int b) 
+        { 
+            int result1 = a + b;
+            return result1; 
+        }
+
+        static int Minus(int a, int b)
+        {
+            int result2 = a - b;
+            return result2;
+        }
+
+        static int multipe(int a, int b)
+        {
+            int result3 = a * b;
+            return result3;
+        }
+
+        static double divide(int a, int b)
+        {
+            double result4 = a / (double)b;
+            return result4;
+        }
+        static void Main(string[] args)
+        {
+            //사칙연산을 구현하는 함수 4개 구현
+            int a = Plus(1, 2);
+            int b = Minus(1, 2);
+            int c = multipe(1, 2);
+            double d = divide(1, 2);
+            Console.WriteLine(a);
+            Console.WriteLine(b);
+            Console.WriteLine(c);
+            Console.WriteLine(d);
+        }
+    }
+}
