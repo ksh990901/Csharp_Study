@@ -1,0 +1,29 @@
+namespace ArrayQuiz01
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] arr = new int[10];
+            for (int i = 0; i < arr.Length; i++)
+                arr[i] = i + 1;
+            //홀수
+            for (int i = 0; i < arr.Length; i++)
+                if (arr[i] % 2 == 0)
+                    Console.Write(arr[i]);
+            
+            Console.WriteLine();
+           //짝수
+            for (int i = 0; i < arr.Length; i += 2)
+                Console.Write(arr[i]);
+
+            Console.WriteLine();
+            //3의배수
+            for (int i = 0; i < arr.Length; i++)
+                if (arr[i] % 3 == 0)
+                    Console.Write(arr[i]);
+
+            Console.WriteLine();
+        }
+    }
+}
