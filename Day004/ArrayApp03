@@ -1,0 +1,25 @@
+namespace ArrayApp03
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //연속된 메모리 공간에 알파벳 대문자 26자를 넣어보세요.
+            char[] arr = new char[26]; //내가 만든 배열의 이름에 0번지 부터 arr[0] ~ arr[1N-1]
+
+            //Console.WriteLine(arr.Length);
+            //Console.WriteLine((int)'a');
+            
+            char ch = 'A';
+            for(int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = (char)ch++;
+            }
+            for(int j = 0; j < arr.Length; j++)
+            {
+                Console.Write(arr[j]);
+            }
+            
+        }
+    }
+}
