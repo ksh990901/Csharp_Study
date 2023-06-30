@@ -1,0 +1,35 @@
+namespace _231Quiz
+{
+    class MainApp
+    {
+        public static void Main()
+        {
+            double mean = 0;
+
+            Mean(1, 2, 3, 4, 5, ref mean);
+
+            Console.WriteLine("평균 : {0}", mean);
+        }
+
+        public static void Mean(
+            double a, double b, double c, 
+            double d,double e, ref double mean)
+        {
+            mean = (a + b + c + d + e) / 5;
+        }
+    }
+    internal class Program
+    {
+        //static double Square(double arg)
+        //{
+        //    double result = arg * arg;
+        //    return result;
+        //}
+        //static void Main(string[] args)
+        //{
+        //    Console.WriteLine("수를 입력해주세요. : ");
+        //    string input = Console.ReadLine();
+        //    double arg = Convert.ToDouble(input);
+
+        //    Console.WriteLine("결과 : {0}", Square(arg));
+        //}
