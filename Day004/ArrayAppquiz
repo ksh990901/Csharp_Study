@@ -1,0 +1,34 @@
+amespace ArrayAppquiz
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //대문자 Z ~ A 까지 출력하는 배열 BigAlpha를 만들고 출력하세요. 
+            //소문자 a ~ z까지 출력하는 배열 SmallAlpha배열을 만들고 출력하세요.
+
+            /*
+            char[] arr = new char[26];
+            char ch = 'a';
+            for(int i  = 0; i < arr.Length; i++) 
+            {
+                arr[i] = (char)ch++;
+            }
+            for (int j = 0; j < arr.Length; j++)
+            {
+                Console.WriteLine(arr[j]);
+            }
+            */
+            char[] arr = new char[26];
+            char ch = 'Z';
+            for(int i  = 0; i < arr.Length; i++)
+            {
+                arr[i] = (char)ch--;
+            }
+            for(int j =0; j < arr.Length;j++)
+            {
+                Console.WriteLine(arr[j]);
+            }
+        }
+    }
+}
