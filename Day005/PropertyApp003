@@ -1,0 +1,53 @@
+namespace PropertyApp003
+{
+    class BirthDayInfo
+    {
+        private string name;
+        private DateTime birthday;
+
+        //property
+        public string Name
+        {
+            get 
+            { 
+                return name; 
+            }
+            set 
+            { 
+                name = value;
+            }
+        }
+        public DateTime Birthday
+        {
+            get 
+            { 
+                return birthday; 
+            }
+            set 
+            { 
+                birthday = value;
+            }
+        }
+
+        public int Age
+        {
+            get
+            {
+                return new DateTime(DateTime.Now.Subtract(birthday).Ticks).Year;
+            }
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            BirthDayInfo birth = new BirthDayInfo();
+            birth.Name = "서현";
+            birth.Birthday = new DateTime(1991, 6, 28);
+
+            Console.WriteLine($"이름 : {birth.Name}");
+            Console.WriteLine($"생일 : {birth.Birthday.ToShortDateString()}");
+            Console.WriteLine($"나이 : {birth.Age}");
+        }
+    }
+}
