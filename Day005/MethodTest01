@@ -1,0 +1,50 @@
+namespace MethodTest01
+{
+    internal class Program
+    {
+        //static void Hello()
+        //{
+        //    Console.WriteLine("Hello World");
+        //}
+        //static int Plus(int n1,  int n2)
+        //{
+        //    return n1 + n2;
+        //}
+        //double Avg(int kor, int eng, int math)
+        //{
+        //    int total = kor + eng + math;
+        //    return (double)total / 3.0;
+        //}
+        double Avg(int kor, int eng, int math)
+        {
+            int total = kor + eng + math;
+            return (double)total / 3.0;
+        }
+        static void Main(string[] args)
+        {
+            //Program p = new Program();
+            //Plus(5,7);
+            //Console.WriteLine(Plus(5,7));
+            //int[] score = new int[3];
+
+            //for( int i = 0; i < 3; i++ )
+            //{
+            //    score[i] = int.Parse(Console.ReadLine());
+            //}
+
+            //Program p=  new Program();
+            //double result = p.Avg(score[1], score[2], score[3]);
+            //Console.WriteLine(result);
+            int[] Score = new int[3];
+
+            for(int i  = 0; i < 3; i++)
+            {
+                Score[i] = int.Parse(Console.ReadLine());
+            }
+
+            Program p = new Program();
+            double result = p.Avg(Score[0], Score[1], Score[2]);
+            Console.WriteLine(result);
+        }
+    }
+}
