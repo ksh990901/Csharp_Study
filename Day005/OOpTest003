@@ -1,0 +1,40 @@
+namespace OOpTest003
+{
+    class Cat
+    {
+        //이름
+        public string Name;
+        //색깔
+        public string Color;
+        //나이
+        public int Age;
+
+        //생성자
+        public Cat() //default 생성자 
+        {
+            //초기값
+            this.Name = "야옹이";
+            this.Age = 2;
+            this.Color = "red";
+        }
+
+        //메소드 "야옹"
+        public void Bark() 
+        {
+            Console.WriteLine("야옹");
+        }
+
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Cat cat = new Cat();
+            //cat.Name = "마루";
+           // cat.Color = "검은색";
+           // cat.Age = "3";
+           cat.Bark();
+            Console.WriteLine($"고양이의 이름 : {cat.Name} 고양이의 색상 : {cat.Color} 고양이 나이 : {cat.Age}");
+        }
+    }
+}
