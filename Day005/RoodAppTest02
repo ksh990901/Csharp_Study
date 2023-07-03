@@ -1,0 +1,23 @@
+namespace RoodAppTest02
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //int i = 0;
+
+            //while(i < 5)
+            //{
+            //    Console.WriteLine(i++); //     ++i  = 12345(전치연산자)  i++ =  01234(후치연산자)
+            //    Console.WriteLine("i : " +  i);  1줄 아래는 무조건 +1
+            //}
+            int i = 0;
+
+            while (i < 5)
+            {
+                Console.WriteLine(i++);
+                Console.WriteLine("i : " + i);
+            }
+        }
+    }
+}
