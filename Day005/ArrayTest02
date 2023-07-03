@@ -1,0 +1,44 @@
+amespace ArrayTest02
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            // 1 ~ 10까지 배열에 홀수만 입력되는 5크기의 arr 배열을 만드세요.
+            //입력
+            int[] arr = new int[5];
+            //배열 선언
+            int cnt = 1;    //flag 또는 count 변수를 사용할 수 있는가?
+            for(int i  = 0; i < 5; i++)
+            {
+                    arr[i] = cnt;
+                    cnt += 2;   
+            }
+            //화면에 출력
+            for(int i =0; i < 5; i++)
+            {
+              Console.WriteLine(arr[i]);
+            }
+            
+            //1 ~ 10까지 정수가 담겨있는 배열 arr
+            //짝수만 출력
+            // 2 4 6 8 10 -----> 출력
+            int[] arr3 = new int[10];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr3[i] = i +1;
+                if (arr3[i] % 2 == 0)
+                    Console.WriteLine(arr[i]);
+            }
+
+            // 홀수만 출력
+            int[] arr2 = new int[10];
+            for(int i  = 0; i < arr2.Length; i++)
+            {
+                arr2[i] = i +1;
+                if (arr2[i] % 2 != 0) 
+                    Console.WriteLine(arr2[i]);
+            }
+        }
+    }
+}
