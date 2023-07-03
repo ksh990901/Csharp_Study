@@ -1,0 +1,38 @@
+namespace OOpApp04
+{
+    class Cat
+    {
+        //멤버변수
+        public string Name;
+        public string Color;
+        public void Meow() 
+        {
+            Console.WriteLine($"{Name} : 야옹");
+        }
+
+        //default 생성자
+        public Cat() 
+        {
+            Name = "";
+            Color = "";
+        }
+        //인자가 있는 생성자
+        public Cat(string _Name, string _Color)
+        {
+            Name = _Name;
+            Color = _Color;
+        }
+        //멤버변수(위 아래 상관없음)
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Cat kitty = new Cat("키티", "하얀색");
+            Console.WriteLine(kitty.Name + kitty.Color);
+
+            Cat nero = new Cat("네로", "검은색");
+            Console.WriteLine(nero.Name + nero.Color);
+        }
+    }
+}
