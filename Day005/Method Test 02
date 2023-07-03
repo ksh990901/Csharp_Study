@@ -1,0 +1,31 @@
+namespace Method_Test_02
+{
+    class Myapp
+    {
+        public int Max(int a, int b)
+       {
+           if (a > b)
+               return a;
+           else
+               return b;
+       }
+        public int Min(int a, int b)
+        {
+            if (a > b) 
+                return b;
+            else
+                return a;
+        }
+    }
+    internal class Program
+    {
+        // 두 수를 입력받아 큰 수를 출력
+        static void Main(string[] args)
+        {
+            Myapp app = new Myapp();
+            Console.WriteLine(app.Max(100, 200));
+            Console.WriteLine(app.Min(100, 200));
+
+        }
+    }
+}
