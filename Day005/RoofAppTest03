@@ -1,0 +1,51 @@
+namespace RoofAppTest03
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //int i = 0;
+            //do
+            //{
+            //    Console.WriteLine(i);
+            //    i++;
+
+            //} while (i < 5);
+            // 1. 무한루프를 do ~ while문으로 만듭니다.
+            // 2. 정수 100을 넣으면 종료되는 프로그램을 만들어주세요.
+            // 3. switch ~ case문을 넣어 오전동일한 프로그램을 만들어주세요.
+            int n;
+            do
+            {
+                Console.Write("숫자를 입력해주세요 : ");
+                n = int.Parse(Console.ReadLine());
+                switch (n)
+                {
+                    case 1:
+                        Console.WriteLine("1을 입력하였습니다");
+                        break;
+                    case 2:
+                        Console.WriteLine("2을 입력하였습니다");
+                        break;
+                    default:
+                        Console.WriteLine("1,2이외의 수를 입력하였습니다");
+                        break;
+                }
+                if (n == 100)
+                {
+                    Console.WriteLine("100을 입력하셔서 종료합니다");
+                    Environment.Exit(0);
+                }
+ 
+
+            } while (true);
+
+            
+            /* 클래스는 객체를 만들기 위한 청사진
+             * 클래스 선언 속성 
+             * 객체 생성
+             */
+          
+        }
+    }
+}
