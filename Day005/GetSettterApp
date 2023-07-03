@@ -1,0 +1,47 @@
+namespace GetSetterApp
+{
+    class Cat
+    {
+        public string name;
+        public string color;
+        public int age;
+
+        public void setName(string _name)
+        {
+            name = _name;
+        }
+        public void setcolor(string _color)
+        {
+            color = _color;
+        } 
+
+        public void setage(int _age)
+        {
+            age = _age;
+        }
+
+        public string getName()
+        {
+            return name;
+        }
+        public string getcolor() 
+        {
+            return color;
+        }
+        public int getage() 
+        {
+            return age;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Cat nero = new Cat();
+            nero.setName("네로");
+            nero.setcolor("검은색");
+            nero.setage(10);
+            Console.WriteLine($"이름 : {nero.getName()} 색상 : {nero.getcolor()} 나이 : {nero.getage()});
+        }
+    }
+}
