@@ -1,0 +1,28 @@
+namespace OOpApp004
+{
+    class Calculator
+    {
+        public int Plus(int x, int y)
+        {
+            return x + y;
+        }
+        public int Plus(int x , int y, int z)
+        {
+            return x + y + z; 
+        }
+        public double Plus(double x, double y, double z)
+        {
+            return x + y + z;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Calculator cal = new Calculator();
+            //Console.WriteLine(cal.Plus(100, 200));
+            //Console.WriteLine(cal.Plus(100,200,300));
+           cal.Plus(1.1, 2.2, 3.3);
+        }
+    }
+}
