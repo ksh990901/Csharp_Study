@@ -1,0 +1,34 @@
+namespace OOpAPp05
+{
+    class Calculator
+    {
+        // 오버로딩(over loading)
+        //정수 두개를 합산하는 Plus 메소드
+        //정수 네개를 합산하는 Plus 메소드
+        //double 두개를 합산하는 Plus 메소드
+        public int Plus(int a, int b)
+        {
+            return a + b;
+        }
+        
+        public int Plus(int a, int b, int c, int d) 
+        {
+            return a + b + c + d;
+        }
+
+        public double Plus(double a, double b)
+        {
+            return (double)a + b;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Calculator cal = new Calculator(); 
+            //Console.WriteLine(cal.Plus(1, 2));
+            //Console.WriteLine(cal.Plus(1, 2, 3, 4));
+            Console.WriteLine(cal.Plus(1.1, 2.2));
+        }
+    }
+}
