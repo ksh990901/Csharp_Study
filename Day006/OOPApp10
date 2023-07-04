@@ -1,0 +1,27 @@
+namespace OOpApp10
+{
+    abstract class Shape
+    {
+        public abstract void Draw();   //추상메소드는 구현하지 않음
+    }
+    class Triangle : Shape
+    {
+        public override void Draw()
+        {
+            //throw new NotImplementedException();
+            Console.WriteLine("삼각형을 그립니다");
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //실세계
+            Shape s1 = new Triangle();
+            s1.Draw();
+
+            Triangle s2 = new Triangle();
+            s2.Draw();
+        }
+    }
+}
