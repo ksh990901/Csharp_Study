@@ -1,0 +1,63 @@
+namespace OOpApp008
+{
+    //도형(부모)클래스를 만듭니다.
+    //삼각형(자식)클래스를 만듭니다. 상속을 하세요.
+    //사각형(자식)
+    //원(자식)
+    //공통메소드 draw()를 구현하고 각 클래스에서 오버라이딩 해주세요.
+    class Shape
+    {
+        public virtual void draw()
+        {
+            Console.WriteLine("도형입니다");
+        }
+    }
+    class Triangle : Shape
+    {
+        public override void draw()
+        {
+            Console.WriteLine("삼각형입니다");
+        }
+    }
+
+    class Rectangle : Shape
+    {
+        public override void draw()
+        {
+            Console.WriteLine("사각형입니다");
+        }
+    }
+
+    class Circle : Shape
+    {
+        public override void draw()
+        {
+            Console.WriteLine("원입니다");
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Shape s1 = new Shape();
+            s1.draw();
+            Triangle triangle = new Triangle();
+            triangle.draw();
+            Rectangle rectangle = new Rectangle();
+            rectangle.draw();
+            Circle circle = new Circle();
+            circle.draw();
+
+            Shape[] shapes =  new Shape[4];
+            shapes[0] = new Shape();
+            shapes[1] = new Triangle();
+            shapes[2] = new Rectangle();
+            shapes[3] = new Circle();
+
+            for (int i = 0; i < 4; i++)
+            {
+                shapes[i].draw();
+            }
+        }
+    }
+}
