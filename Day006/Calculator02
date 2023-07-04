@@ -1,0 +1,29 @@
+namespace CalculatorApp02
+{
+    //사치연산을 하는 계산기를 만들어 봅시다.
+    class Calculator
+    {
+        //메소드
+        public int Plus(int x, int y)
+        {
+            return x + y;
+        }
+        public int Minus(int x, int y)
+        {
+            return x - y;
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //새롭게 창조된 세상
+            Calculator calculator = new Calculator();
+            int result1 = calculator.Plus(1, 2);
+            int result2 = calculator.Minus(1, 2);
+            Console.WriteLine(result1);
+            Console.WriteLine(result2);
+
+        }
+    }
+}
