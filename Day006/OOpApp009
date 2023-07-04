@@ -1,0 +1,34 @@
+namespace OOpApp009
+{
+    class Shape
+    {
+        public virtual void Draw()
+        {
+            Console.WriteLine("도형을 그린다");
+
+        }
+    }
+    class Triangle : Shape
+    {
+        public override void Draw()
+        {
+            Console.WriteLine("삼각형을 그린다");
+
+        }
+    }
+        internal class Program
+        { 
+        static void Main(string[] args)
+        {
+            Shape shape = new Shape();
+            shape.Draw();
+            Triangle tridangle = new Triangle();
+            tridangle.Draw();
+
+            Console.WriteLine();
+
+            Shape triangle2 = new Triangle();
+            triangle2.Draw();
+        }
+    }
+}
