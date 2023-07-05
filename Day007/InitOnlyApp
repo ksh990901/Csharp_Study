@@ -1,0 +1,15 @@
+namespace InitOnlyApp
+{
+    class Transaction
+    {
+        public string From { get; set;
+    }
+    internal class Program
+    {
+        
+        static void Main(string[] args)
+        {
+
+        }
+    }
+}
