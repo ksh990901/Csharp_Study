@@ -1,0 +1,40 @@
+namespace InterfaceApp001
+{
+    interface IRunnable
+    {
+        void Run();
+    }
+
+    interface IFlyable : IRunnable
+    {
+        void Fly();
+    }
+
+    class FlyingCar : IFlyable
+    {
+        public void Fly()
+        {
+            Console.WriteLine("날다");
+        }
+
+        public void Run()
+        {
+            Console.WriteLine("달리다");   
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            FlyingCar car = new FlyingCar();
+            car.Run();
+            car.Fly();
+
+            IRunnable runnable = car as IRunnable;
+            runnable.Run();
+
+            IFlyable flyable = car as IFlyable;
+            flyable.Fly();
+        }
+    }
+}
