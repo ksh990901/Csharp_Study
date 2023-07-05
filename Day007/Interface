@@ -1,0 +1,25 @@
+interface IWing
+{
+    public void Fly();
+}
+
+class Horse
+{
+
+}
+
+class Unicon : Horse, IWing
+{
+    public void Fly()
+    {
+        Console.WriteLine("유니콘이 날다");
+    }
+}
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Unicon newunicon = new Unicon(); 
+        newunicon.Fly();
+    }
+}
