@@ -3,9 +3,13 @@ C#공부
 [구조적인 프로그래밍]
 
 변수와 상수
+
 제어문 (if else, switch case)
+
 반복문(for, while, do while)
+
 메소드(함수)
+
 배열 [자료구조 -->Array, Stack, Queue, Tree, Graph ...]
 
 [객체지향 프로그래밍]
