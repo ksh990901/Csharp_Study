@@ -1,0 +1,44 @@
+namespace OOp_Study01
+{
+    class Point
+    {
+        public int x;
+        public int y;
+        // 생성자의 역할은 객체의 초기화
+        public Point()
+        {
+            x = 1;
+            y = 1;
+        }
+        public Point(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+    
+   
+        // 1. 멤버변수
+        
+        //private  string name;
+      
+        // 2. 생성자
+        // 3. 멤버 메소드
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            //int x = 3; 
+            //int y = 5;
+
+            //Console.WriteLine($"x좌표는 {x} y좌표는 {y}");
+
+            Point pt1 = new Point();
+            Console.WriteLine($"{pt1.x},{pt1.y}");
+
+            Point pt2 = new Point(2, 2);
+            Console.WriteLine($"{pt2.x},{pt2.y}");
+            
+        }
+    }
+}
