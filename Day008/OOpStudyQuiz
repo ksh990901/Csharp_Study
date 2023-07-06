@@ -1,0 +1,51 @@
+namespace OOpStudyQuiz
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("1번");
+            string input = Console.ReadLine();
+
+            string reversed = ""; //string.Empty
+            for (int i = input.Length - 1; i >= 0; i--)
+            {
+                reversed += input[i];
+            }
+            Console.WriteLine(reversed);
+            
+
+            //2.
+            //string input = Console.ReadLine();
+
+            //char[] array = input.ToCharArray();
+            //Array.Reverse(array);
+            //string reversed = new string(array);
+
+            //Console.WriteLine(reversed);
+
+
+            //3.
+            //System Stack 사용
+            //string input = Console.ReadLine();
+
+            //Stack<char> stack = new Stack<char>(input);
+            //string reversed = string.Join("", stack);
+
+            //Console.WriteLine(reversed);
+
+           
+
+           
+            //4.
+            //Linq 사용
+            //string input = Console.ReadLine();
+
+            //string reversed = new string(input.Reverse().ToArray());
+
+            //Console.WriteLine(reversed);
+
+          
+        }
+    }
+}
