@@ -1,0 +1,24 @@
+namespace NestedClassApp
+{
+    //외부 클래스, 내부클래스
+    //Outer Class, InnerClass
+    class OuterClass
+    {
+        private int OuterNumberr;
+        class InnerClass
+        {
+            public void DoSomething()
+            {
+                OuterClass outer = new OuterClass();
+                outer.OuterNumberr = 100;
+            }
+           
+        }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+        }
+    }
+}
