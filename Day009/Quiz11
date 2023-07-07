@@ -1,0 +1,115 @@
+namespace Quiz11
+{
+    class Person
+    {
+         
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+
+        public Person(int id, string name, string phonenumber)
+        {
+            ID = id;
+            Name = name;
+            PhoneNumber = phonenumber;
+        }  
+
+
+    }
+    internal class Program
+    {
+       static int N = 0;
+        static List<Person> list = new List<Person>();
+        static void Main(string[] args)
+        {
+          
+            while (true)
+            {
+                Ulinit();
+                int n = int.Parse(Console.ReadLine());
+                Console.WriteLine();
+                switch (n)
+                {
+                    case 1:
+                        insert();
+                        break;
+                        case 2:
+                        Console.WriteLine("삭제할 학생의 ID를 입력하세요.");
+                        int r =int.Parse(Console.ReadLine());
+                        break;
+                        case 3:
+                        Print();
+                        break;
+                        case 4:
+                        Console.WriteLine("수정할 학생의ID를 입력하세요 : ");
+                        int m = Find(int.Parse(Console.ReadLine()));
+                        Modify(m);
+                        break;
+                    default:
+                        Console.WriteLine("시스템을 종료합니다");
+                         Environment.Exit(0);
+                        break;
+                }
+
+            }
+
+            
+            
+        }
+        static void Ulinit()
+        {
+            Console.WriteLine("1.데이터입력");
+            Console.WriteLine("2.데이터삭제");
+            Console.WriteLine("3.데이터조회");
+            Console.WriteLine("4.데이터수정");
+            Console.WriteLine("5.시스템종료");
+            Console.WriteLine("\n메뉴 : ");
+        }
+        static int Find(int id)
+        {
+            for(int i = 0; i < list.Count; i++)
+            {
+                if (list[i].ID == id) return i;
+            }
+            Console.WriteLine("ID가 존재하지 않습니다.");
+            return -1;
+        }
+        static void insert()
+        {
+            Console.Write("ID를 입력해 주세요 : ");
+            int id = int.Parse(Console.ReadLine());
+            Console.Write("이름을 입력해 주세요 : ");
+            string name = Console.ReadLine();
+            Console.Write("전화번호를 입력해 주세요 : ");
+            string pnumber = Console.ReadLine();
+            Person p = new Person(id, name, pnumber);
+            list.Add(p);
+            Console.WriteLine("\n데이터가 정상적으로 입력되었습니다.\n");
+        }
+        static void Delete(int r)
+        {
+            int remove = Find(r);
+            list.Remove(list[remove]);
+        }
+        static void Print()
+        { Console.WriteLine($"ADDR_ID\tName\t\tHP");
+            foreach (Person p in list)
+            {
+                Console.WriteLine($"{p.ID}\t\t{p.Name}\t\t{p.PhoneNumber}");
+            }
+            Console.WriteLine();
+        }      
+        static void Modify(int m)
+        {
+            int modify = Find(m);
+            Person std = list[modify];
+            Console.WriteLine("이름을 입력해주세요");
+            string rename = Console.ReadLine(); 
+            std.Name = rename;
+            Console.WriteLine("전화번호를 입력해주세요");
+            string renumber = Console.ReadLine(); 
+            std.PhoneNumber = renumber;
+            Console.WriteLine("\n데이터가 정상적으로 수정되었습니다.\n");
+        }
+    }   
+}
