@@ -1,0 +1,15 @@
+﻿﻿1. /as sysdba 
+
+
+
+2. conn system
+
+    1234
+
+
+
+3. ALTER USER hr ACCOUNT UNLOCK;
+
+
+
+4. ALTER USER hr identified by hr;
