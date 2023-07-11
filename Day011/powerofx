@@ -1,0 +1,25 @@
+namespace powerofx
+{
+    class Program
+    {
+        static int Pow(int a, int b)
+        {
+            int result = 1;
+           for(int i = 0; i < b; i++)
+            {
+                result *= a;
+            }
+            return result;
+        }
+        static void Main(string[] args)
+        {
+            int a = int.Parse(Console.ReadLine());
+            int b = int.Parse(Console.ReadLine());
+
+            int result = Pow(a, b);
+            Console.WriteLine(result);
+
+           
+        }
+    }
+}
