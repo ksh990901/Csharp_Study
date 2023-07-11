@@ -1,0 +1,14 @@
+namespace Quiz23
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int a = int.Parse(Console.ReadLine());
+            int result = 180 * (a - 2);
+            int result1 = 360;
+            Console.WriteLine(result);
+            Console.WriteLine(result1);
+        }
+    }
+}
