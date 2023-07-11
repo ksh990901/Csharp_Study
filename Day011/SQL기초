@@ -1,0 +1,42 @@
+#검색
+select * from employees;
+
+describe employees;
+
+select first_name from employees;
+select last_name from employees;
+select first_name, last_name from employees;
+
+select * from countries;
+select country_name from countries;
+
+select * from employees;
+select first_name, salary from employees
+order by salary desc;
+
+#사원정보
+desc emp;
+#부서정보
+desc dept;
+#사원급여정보
+desc salgrade;
+
+#p.80
+select * from emp;
+select empno, ename, deptno 
+from emp;
+
+select empno, deptno from emp;
+
+select deptno from emp;
+#중복을 제거하고 싶어요.
+select distinct deptno from emp;
+
+select distinct job, ename, deptno from emp
+order by deptno;
+
+select all job, deptno from emp;
+
+#p.81 컬럼을 가지고 연산을 할 수 있습니까??
+select ename, sal, sal*12 + comm, comm from emp;
+select ename, sal, sal*12 + nvl(comm, 0) as 연봉, nvl(comm, 0) from emp;
