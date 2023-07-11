@@ -1,0 +1,29 @@
+namespace Quiz21
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int a = Int32.Parse(Console.ReadLine());
+            int b = Int32.Parse(Console.ReadLine());
+
+            int result = 0;
+            for(int i = a; i <= b;  i++) 
+            {
+                int cnt = 0;
+                for(int j = 1; j <= i; j++)
+                {
+                    if(i % j == 0)
+                    {
+                        cnt++;
+                    }
+                }
+                if(cnt % 2  == 0) 
+                {
+                    result++;
+                }
+            }
+            Console.WriteLine(result);
+        }
+    }
+}
