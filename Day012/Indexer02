@@ -1,0 +1,68 @@
+﻿C#에서 인덱서를 사용하는 예를 들어 문자열 내에 특정 문자가 
+
+몇 번 나타나는지 계산하는 클래스를 작성하세요.
+
+
+
+이 클래스는 문자열을 받아 문자열 내에 각 문자가 몇 번 등장하는지 계산해야 합니다.
+
+
+
+또한, 이 클래스는 인덱서를 통해 특정 문자의 등장 횟수를 반환해야 합니다. 
+
+
+
+아래는 이 클래스가 어떻게 사용되는지를 보여줍니다.
+
+---------------------------------------------------------
+
+[main 코드]
+FrequencyCounter counter = new FrequencyCounter("hello world");
+Console.WriteLine(counter['l']);  // 출력: 3
+-----------------------------------------------------------
+3
+
+using System;
+using System.Collections.Generic;
+
+public class FrequencyCounter
+{
+    private Dictionary<char, int> characterFrequencies;
+
+    public FrequencyCounter(string input)
+    {
+        characterFrequencies = new Dictionary<char, int>();
+
+        foreach (var ch in input)
+        {
+            if (characterFrequencies.ContainsKey(ch))
+            {
+                characterFrequencies[ch]++;
+            }
+            else
+            {
+                characterFrequencies[ch] = 1;
+            }
+        }
+    }
+
+    public int this[char character]
+    {
+        get
+        {
+            return characterFrequencies.ContainsKey(character) ? characterFrequencies[character] : 0;
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        FrequencyCounter counter = new FrequencyCounter("hello world");
+        Console.WriteLine(counter['l']);  
+    }
+}
+
+/*출력결과 
+3        */
