@@ -1,0 +1,61 @@
+namespace HelloWolrdQuiz01
+{
+    class Program
+    {
+        public int CharCounter(char[] arr, char ch)
+        {
+            int N = 0;
+            for(int i  = 0; i < arr.Length; i++) 
+            
+                if (arr[i] == ch) 
+                {
+                    N++;
+                }
+              return N;
+            
+        }
+        static void Main(string[] args)
+        {
+            Console.Write("문자열 입력 : ");
+            string str = Console.ReadLine();
+            Console.Write("문자 입력 : ");
+            string str2 = Console.ReadLine(); 
+            
+            char c = str2.ElementAt(0);
+
+            Program p = new Program();
+            int result = p.CharCounter(str.ToArray(), c);
+            Console.Write(result);
+            
+        }
+    //    public int CharCounter(char[] arr, char ch)
+    //    {
+    //        int N = 0;
+    //        //코딩
+    //        for (int i = 0; i < arr.Length; i++)
+    //            if (arr[i] == ch)
+    //            {
+    //                N++;
+    //            }
+    //        return N;
+    //    }
+
+        //    static void Main(string[] args)
+        //    {
+        //        //1.문자열 입력
+        //        Console.Write("문자열 입력 : ");
+        //        string str = Console.ReadLine();
+        //        //2. 문자 입력
+        //        Console.Write("문자 입력 : ");
+        //        string str2 = Console.ReadLine();
+        //        //char c = str2[0];
+        //        char c = str2.ElementAt(0);
+
+        //        Program program = new Program();
+        //        int result = program.CharCounter(str.ToArray(), c);
+
+        //        //char[] chars = str.ToCharArray();
+        //        Console.WriteLine($"결과 : {result}");
+        //    }
+    }
+}
