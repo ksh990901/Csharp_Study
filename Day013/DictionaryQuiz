@@ -1,0 +1,21 @@
+namespace DictionaryQuiz
+{
+    internal class Program
+    {
+       static string CheckLogin(Dictionary<string, string> userinfo, string Id, string pwd)
+        {
+            if (userinfo["userInfo"] == Id && userinfo["password"] == pwd)
+               { 
+                return "로그인에 성공하였습니다"; 
+               }
+             else
+
+                Console.WriteLine("로그인에 실패하였습니다");
+            
+        }
+        static void Main(string[] args)
+        {
+        }
+        
+    }
+}
