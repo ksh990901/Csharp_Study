@@ -1,0 +1,115 @@
+#3일차
+#사원 이름의 두번 째 글자가 L인 사원만 출력하세요.
+select * from emp
+where ename like '_L%';
+#Between A and B 급여가 2000이상 3000이하를 출력해주세요.
+select * from emp
+where sal between 2000 and 3000;
+
+#부서 번호가 10번인 부서의 
+#EMPNO , ENAME, SAL, DEPTNO
+#부서 번호가 20번인 부서의 컬럼
+select empno, ename, sal, deptno from emp
+where deptno = 10
+union
+select empno, ename, sal, deptno from emp
+where deptno = 20;
+
+#차집합
+select empno, ename , sal, deptno from emp
+minus
+select empno, ename , sal, deptno from emp
+where deptno = 10;
+
+#교집합
+select empno, ename , sal, deptno from emp
+intersect
+select empno, ename , sal, deptno from emp
+where deptno = 10;
+
+#p.125
+#1
+select * from emp
+where ename like '%S';
+
+#2
+select empno, ename, job, sal, deptno from emp
+where deptno = 30 and job = 'SALESMAN';
+
+#3
+select empno, ename, sal, deptno from emp
+where deptno in (20,30) and sal > 2000;
+
+select empno, ename, sal, deptno from emp
+where deptno = 20 or deptno = 30
+intersect
+select empno, ename, sal, deptno from emp
+where sal > 2000;
+
+#4
+select * from emp
+where sal <2000 or sal > 3000;
+
+#5
+select ename, empno, sal, deptno from emp
+where ename like '%E%' and deptno = 30 
+and sal not between 1000 and 2000;
+
+#6
+select * from emp
+where comm is null
+and mgr is not null
+and job in('MANAGER', 'CLERK')
+and ename not like '_L%';
+
+#6장 일반함수/오라클함수
+select ename , upper(ename), lower(ename),
+initcap(ename) from emp;
+
+#6-2 upper 함수로 문자열 비교하기
+select * from emp
+where upper(ename) = upper('jones');
+
+#6-3 
+select * from emp
+where upper(ename)  like upper('%king%');
+
+#문자열의 길이
+select ename, length(ename) from emp;
+
+#사원 이름의 길이가 5 이상인 행 출력하기
+select ename, length(ename) from emp
+where length(ename) >= 6;
+
+#한글 바이트 수 
+select length('한글'), lengthb('한글') 
+from dual;
+
+#substr(,,) substr(,)
+select job, substr(job, 1, 2) , substr(job, 3, 2) 
+from emp;
+select substr('990901' , 1 ,2 ), substr('990901', 3, 4)
+from dual;
+
+#주민번호 앞,뒷자리 뽑기
+select substr('990901 - 1111111' , 1, 6) from dual;
+select substr('990901 - 1111111' , 10, 7) from dual;
+
+#substr -1값
+select job, substr(job, -3) from emp;
+select substr('홍길동' , -2) from dual;
+
+#문자열에서 특정 문자 위치를 찾는 instr 함수
+select instr('안녕하세요' , '요') as 위치 from dual;
+
+#검색 위치가 변경
+select instr('HELLO, ORACLE!','L'),
+        instr('HELLO, ORACLE!','L',5),
+        instr('HELLO, ORACLE!','L', 2, 2)
+as 위치 from dual;
+
+#replace
+select '010-1234-5678' as origin, 
+replace('010-1234-5678' , '-' , ' ') as rp1,
+replace('010-1234-5678' , '-') as rp2
+from dual;
