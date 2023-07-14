@@ -1,0 +1,56 @@
+namespace Quiz0010
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int a = int.Parse(Console.ReadLine());
+            {
+                switch (a)
+                {
+                    case 1:
+                        {
+                            Console.WriteLine("enjoy");
+                        }
+                        break;
+
+                    case 2:
+                        {
+                            Console.WriteLine("oops");
+                        }
+                        break;
+
+                    case 3:
+                        {
+                            Console.WriteLine("enjoy");
+                        }
+                        break;
+                    case 4:
+                        {
+                            Console.WriteLine("oops");
+                        }
+                        break;
+                    case 5:
+                        {
+                            Console.WriteLine("enjoy");
+                        }
+                        break;
+                    case 6:
+                        {
+                            Console.WriteLine("oops");
+                        }
+                        break;
+                    case 7:
+                        {
+                            Console.WriteLine("oops");
+                        }
+                        break;
+                    default:
+                            Console.WriteLine("oops");
+                            break;
+                 
+                }
+            }
+        }
+    }
+}
