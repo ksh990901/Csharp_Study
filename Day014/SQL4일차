@@ -1,0 +1,75 @@
+#4일차
+#자신의 주민등록번호를 넣고 연도와 생일을 뽑아냅니다.
+select '990901 - 1111111' as 주민등록번호
+substr('990901 - 1111111', 1, 6) as 주민등록번호 앞자리 
+from dual;
+
+#LPAD, RPAD 데이터의 빈공간을 채우는 함수
+select 'Oracle',
+         lpad('Oracle',10, '#'),
+         rpad('Oracle', 10, '*')
+         from dual;
+#RPAD, LPAD 응용
+#RPAD, LPAD를 이용하여 주민번호 뒤자리를 *로 표시하기
+select 
+      rpad('990901-', 14 , '*'),
+      rpad('010-1234-', 13, '#')
+      from dual; 
+      
+#문자열 두개를 붙여주세요. '7788' 'SCOTT'   concat
+select concat('7788', 'SCOTT') from dual;
+select concat(empno, ename) from emp;
+
+#문자열 붙이기 가장 많이 사용하는 표현은?
+select '7788' || ':' || 'SCOTT' from dual;
+
+#Trim 공백 제거
+select trim('    HELLO    ') from dual;
+
+#p.146 round 반올림 해주는 함수
+select round(3.141592) ,
+       round(3.141592,1) ,
+        round(3.141592,2) ,
+        round(3.141592,3) 
+        from dual;
+        
+#trunc 버림함수
+select trunc(1234.5678),
+       trunc(1234.5678, 1),
+       trunc(1234.5678, 2),
+       trunc(1234.5678, 3)
+from dual;
+
+#지정한 숫자와 가장 가까운 정수 찾는 함수 ceil, floor
+select ceil(3.14), floor(3.14),
+       ceil(-3.14), floor(-3.14)
+       from dual;
+
+#나머지 구하는 연산자 mod
+select mod(15,6), mod(10,2) , mod(11,2)
+from dual;
+
+#다중행 함수 sum
+select sum(sal) from emp;
+select ename, sal from emp;
+select ename, sum(sal) from emp
+group by ename;
+
+#직원들의 전체 보너스(Comm)의 총합은?
+select sum(comm) from emp;
+
+#급여 합계
+select sum (sal), sum(distinct sal), sum(all sal)
+from emp;
+
+# 총 직원의 수는?
+select count(*) from emp;
+
+#30번 부서의 직원의 수는?
+select count(*) 
+from emp
+where deptno = 30;
+
+#급여의 최대와 최소를 각각 구해봅시다.
+select deptno, max(sal), min(sal) from emp
+group by deptno order by max(sal) desc;
