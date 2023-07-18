@@ -1,0 +1,175 @@
+select sum(sal) from emp;
+
+
+select deptno, sum(sal) from emp
+group by deptno
+order by deptno;
+
+
+select ename, sum(sal) from emp
+group by ename
+order by sum(sal);
+
+
+#EMP 테이블에 존재하는 직원의 수는?
+select count(*) from emp;
+select * from emp;
+
+
+#가장 높은 급여와 가장 낮은 급여?
+select max(sal) , min(sal) from emp;
+
+
+#부서번호가 20번인 사원의 입사일 중 제일 오래된 입사일 출력
+#hint min, hiredate
+select min(hiredate)
+        from emp
+where deptno = 20;       
+
+
+#30번 부서의 사원들의 평균 급여를 소수점 둘째에서 반올림하세요.
+select round(avg(sal), 1)
+       from emp
+where deptno = 30;
+
+
+#부서별 평균 급여를 소수점 둘째자리에서 반올림하세요.
+select deptno, round(avg(sal) , 1)
+from emp
+group by deptno;
+
+
+#부서번호 및 직책별 평균 급여 정렬하기
+select deptno, job , avg(sal)
+from emp
+group by deptno, job
+order by deptno, job;
+
+
+#group by 절을 사용하여 부서번호 별 평균 추가 수당을 출력해주세요.
+select deptno, nvl(avg(comm),0)
+from emp
+group by deptno
+order by deptno;
+
+
+#평균 급여가 2000달러 이상인 부서와 직책은?
+select deptno, job, avg(sal) from emp
+group by deptno, job
+having avg(sal) >=2000
+order by deptno;
+
+
+#급여가 3000이하이면서 평균 급여가 2000이상인 부서와 직책
+select deptno, job, avg(sal) 
+from emp
+where sal <=3000
+group by deptno, job
+having avg(sal) >= 2000
+order by deptno, job;
+
+#p.212 1
+select deptno, trunc(avg(sal),0) as AVG_SAL, max(sal) as MAX_SAL , min(sal) as MIN_SAL, count(*) as CNT from emp
+group by deptno;
+
+#p.212 2
+select job, count(*) from emp
+group by job
+having count(*) > = 3 ;
+
+#p.212 3
+select TO_CHAR(hiredate, 'YYYY') as HIRE_YEAR , deptno, count(*) 
+from emp
+group by TO_CHAR(hiredate, 'YYYY'), deptno;
+
+#p.213 4
+select nvl2(comm, 'o', 'X') , count(*)
+from emp
+group by nvl2(comm, 'o', 'X');
+
+#join 테이블의 결합
+select * from dept;
+select empno, ename, deptno  from emp;
+
+#real join ------> M * N
+#dpet 4 * emp 12
+select * from emp;
+select * from dept;
+select * from emp, dept;
+select count(*) from emp, dept;
+
+#여러분이 사용하는 join 구문
+# 8-2
+select * from emp e, dept d
+where e.deptno = d.deptno
+order by empno;
+
+select empno, ename, loc from emp e, dept d
+where e.deptno = d.deptno
+order by empno;
+
+#EMP 테이블 별칭을 E DEPT 별칭을 D로 하여 
+# EMP 테이블의 사원번호와 DEPT 테이블 부서의 이름이
+#출력되도록 join 쿼리를 작성해 주세요.
+select e.empno, d.dname 
+from emp e, dept d
+where e.deptno = d.deptno;
+
+#등가조인
+select e.empno, e.ename, d.deptno, d.dname, d.loc
+from emp e, dept d
+where e.deptno = d.deptno;
+
+#p.239 1
+select e.deptno, dname, empno, ename, sal 
+from emp e, dept d
+where e.deptno = d.deptno and sal > 2000;
+
+#p.239 2
+select d.deptno, dname, trunc(avg(sal)), max(sal), min(sal), count(*)
+from emp e, dept d
+where d.deptno = e.deptno
+group by d.deptno, dname
+order by d.deptno;
+
+
+#연습을 위한 테이블
+create table dept_sequence
+    as select * from dept
+        where 1 <> 1;
+#테이블 생성 확인
+select * from dept_sequence;
+desc dept_sequence;
+
+#SEQ 쿼리로 만들기
+create SEQUENCE SEQ_DEPT_SEQUENCE
+    increment by 10
+    start with 10
+    maxvalue 90
+    minvalue 0
+    nocycle
+    cache 2;
+    
+#시퀀스 확인
+select * from USER_SEQUENCES;
+
+#시퀀스 사용
+insert into dept_sequence (deptno, dname, loc)
+values (SEQ_DEPT_SEQUENCE.NEXTVAL, 'DATABASE', 'SEOUL');
+
+select * from dept_sequence;
+
+#시퀀스 번호를 확인하기
+select SEQ_DEPT_SEQUENCE.CURRVAL 
+from dual;
+
+#시퀀스 수정
+ALTER SEQUENCE SEQ_DEPT_SEQUENCE
+ INCREMENT BY 3
+ maxvalue 99
+ cycle;
+ 
+commit;
+
+#시퀀스 삭제
+drop sequence SEQ_DEPT_SEQUENCE;
