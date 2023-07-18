@@ -1,0 +1,20 @@
+namespace WhiletrueQuiz01
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            while(true)
+            {
+                Console.WriteLine("입력 : ");
+                string a = Console.ReadLine();  
+
+                if (a ==  "q")
+                {
+                    Console.WriteLine("프로그램을 종료합니다");
+                    break;
+                }
+            }
+        }
+    }
+}
