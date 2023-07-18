@@ -1,0 +1,23 @@
+namespace PermutationQuiz01
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+
+            int[] arr = new int[3];
+            for(int i  = 0; i <= arr.Length; i++) 
+            {
+                for(int j = 0; j <= arr.Length; i++)
+                {
+                    for(int k  = 0; k <= arr.Length; k++)
+                    {
+                        if (arr[i] != arr[j] && arr[i] != arr[k] && arr[k] != arr[j])
+                        Console.WriteLine($"{arr[i + 1]} {arr[j + 1]} {arr[k + 1]}");
+                    }
+                       
+                }
+            }
+        }
+    }
+}
