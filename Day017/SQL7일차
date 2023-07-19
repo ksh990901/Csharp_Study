@@ -1,0 +1,381 @@
+7일차
+
+select * from dept;
+select * from emp;
+select * from dept, emp;
+select count(*) from dept, emp;
+
+select * from emp e, dept d
+where e.deptno = d.deptno
+order by empno;
+
+select e.empno, e.ename, d.loc
+from emp e, dept d
+where e.deptno = d.deptno
+order by empno;
+
+#emp와 dept를 이용한 조인 테이블을 만들어보세요.
+#empno, ename, deptno, loc
+
+
+select d.deptno, dname, empno, ename, sal
+from emp e,  dept d
+where e.deptno = d.deptno and sal > 2000;
+
+select d.deptno, d.dname, trunc(avg(e.sal)), max(e.sal), min(e.sal), count(*)
+from emp e, dept d
+where e.deptno = d.deptno
+group by d.deptno, d.dname
+order by d.deptno;
+
+#급여 범위를 지정하는 조건식으로 조인
+select * from salgrade;
+select * from emp;
+
+#비등가 조인
+select * from emp e , salgrade s
+where e.sal between s.losal and s.hisal;
+
+#자체 조인
+select * from emp e, emp c
+where e.mgr = c.empno;
+
+#8-8
+select e1.empno, e1.ename, e1.mgr,
+       e2.empno as mgr_empno,
+       e2.ename as mgr_ename
+from emp e1, emp e2
+where e1.mgr = e2.mgr;
+
+#외부조인 outer join
+select * from emp;
+select count(*) from emp;
+select * from emp
+where ename = 'KING';
+
+#일반적 등가 조인
+select e1.empno, e1.ename, e1.mgr,
+       e2.empno as mgr_empno,
+       e2.ename as mgr_ename
+from emp e1, emp e2
+where e1.mgr = e2.empno;
+
+# left outer join 
+select e1.empno, e1.ename, e1.mgr,
+       e2.empno as mgr_empno,
+       e2.ename as mgr_ename
+from emp e1, emp e2
+where e1.mgr = e2.empno(+);
+
+# right outer join
+select e1.empno, e1.ename, e1.mgr,
+       e2.empno as mgr_empno,
+       e2.ename as mgr_ename
+from emp e1, emp e2
+where e1.mgr(+) = e2.empno
+order by e1.empno;
+
+#ANSI 표준
+#SQL-99
+select e.empno, e.ename, e.job, e.mgr,
+       e.hiredate, e.sal, e.comm,
+       deptno, d.dname, d.loc
+from emp e natural join dept d
+order by deptno, e.empno;
+
+#p234 join  ~ on
+select e.empno, e.ename, e.job, e.mgr,
+       e.hiredate, e.sal, e.comm,
+       d.deptno, d.dname, d.loc
+from emp e join dept d on (e.deptno = d.deptno)
+where sal <= 3000
+order by e.deptno, empno;
+
+#8-14 left outter join
+select e1.empno, e1.ename, e1.mgr,
+       e2.empno as mgr_empno,
+       e2.ename as mgr_ename
+from emp e1 left outer join emp e2 on (e1.mgr = e2.empno)
+order by e1.empno;
+
+#8-15 외부 right outer join으로 위 쿼리를 작성해주세요.
+select e1.empno, e1.ename, e1.mgr,
+       e2.empno as mgr_empno,
+       e2,ename as mgr_ename
+from emp e1 right outer join emp e2 on (e1.mgr = e2.empno)
+order by e1.empno;
+
+#p.239 1
+select d.deptno, dname, empno, ename, sal
+from emp e, dept d
+where e.deptno = d.deptno and sal >2000;
+
+#p.239 2
+select d.deptno, dname, trunc(avg(sal)) as AVG_SAL, max(sal) as MAX_SAL, min(sal) as MIN_SAL, count(*) as CNT
+from emp e, dept d
+where e.deptno = d.deptno
+group by d.deptno, dname;
+
+#p.239 3
+select d.deptno, d.dname, e.empno, e.ename, e.job, e.sal
+from emp e right outer join dept d on (e.deptno = d.deptno)
+order by d.deptno, e.ename;
+
+
+select d.deptno, d.dname, e.empno, e.ename, e.job, e.sal
+from emp e ,dept d
+where e.deptno(+) = d.deptno
+order by d.deptno, e.ename;
+
+#p.240 4
+select d.deptno, d.dname, e1.empno, e1.ename, e1.mgr, e1.sal,
+       e1.deptno, s.losal, s.hisal, s.grade
+from emp e1, dept d, salgrade s , emp e2
+where e1.deptno(+) = d.deptno
+and e1. sal between s.losal(+) and s.hisal(+)
+and e1.mgr = e2.empno(+)
+order by d.deptno, e1.empno;
+
+select d.deptno, d.dname, e1.empno, e1.ename, e1.mgr, e1.sal,
+       e1.deptno, s.losal, s.hisal, s.grade
+FROM EMP E1 RIGHT OUTER JOIN DEPT D ON (E1.DEPTNO = D.DEPTNO)
+           LEFT OUTER JOIN SALGRADE S ON (E1.SAL BETWEEN S.LOSAL AND S.HISAL)
+           LEFT OUTER JOIN EMP E2 ON (E1.MGR = E2.EMPNO)
+order by d.deptno, e1.empno;
+
+
+
+
+#서브쿼리 sub query
+#사원이름이 JONES인 급여 출력
+select sal from emp
+where ename = 'JONES';
+
+
+#급여가 2975보다 높은 사원 정보 출력
+select * from emp
+where sal > 2975;
+
+#'JONES'의 급여
+select sal from emp
+where ename = 'JONES';
+
+#급여가 'JONES'보다 높은 사원 정보 출력
+select ename, sal from emp
+where sal > (select sal
+             from emp
+             where ename = 'JONES');
+
+#급여가 'KING'보다 급여가 많은 사람?
+select ename, sal from emp
+where sal > (select sal from emp
+             where ename = 'KING');
+             
+#emp 테이블의 사원 정보중에서 사원이름이 
+#ALLEN인 사원의 추가수당(COMM)보다 많이 받는 사원 정보를 출력
+select * from emp 
+where comm > (select comm
+              from emp
+              where ename = 'ALLEN');
+              
+select ename, comm
+from emp
+where ename = 'ALLEN';
+
+#9-4 서브쿼리의 결과 값이 날짜형의 경우?
+#'ALLEN'보다 입사일이 빠른 직원은?
+select *
+from emp
+where hiredate < (select hiredate 
+                    from emp
+                    where ename = 'ALLEN');
+#9-5 JOIN 구문에서도 SUBQUEY사 동작할까?
+#평균 급여보다 많이 받는 직원들의 정보는?
+#단 부서는 20번 부서만 조사해라.
+select e.empno, e.ename, e.job, e.sal ,d.deptno, d.dname, d.loc
+from emp e , dept d
+     where e.deptno = d.deptno
+     and e.deptno = 20
+     and e.sal > (select avg(sal)
+                        from emp);
+                        
+ #다중행 연산자
+#IN 메인쿼리이 데이터가 서브쿼리의 결과 중 하나라도 일치한 데이터가 있다면 TRUE
+#ANY, SOME 메인쿼리의 조건식을 만족하는 서브쿼리의 결과가 하나 이상이면 TRUE
+#ALL 메인쿼리의 조건식을 서브쿼리의 결과 모두가 만족하면 TURE
+#EXISTS 서브쿼리의 결과가 존재하면(즉, 행이 1개 이상일 경우) TRUE
+#실행 결과가 여러개인 쿼리를 확인
+
+#IN
+select * from emp
+where deptno in(20,30);
+
+#각 부서별 최고 급여와 동일한 급여를 받는 사원정보 출력
+select max(sal) from emp group by deptno;
+
+select * from emp
+where sal in(select max(sal) from emp group by deptno)
+order by deptno;
+
+#ANY
+select * from emp
+where sal = any (select max(sal) from emp group by deptno)
+order by deptno;
+
+#SOME
+select * from emp
+where sal = some (select max(sal) from emp group by deptno)
+order by deptno;
+
+#ANY 30번 부서 사원들의 최대 급여보다 적은 급여를 받는 
+#사원정보 출력하기
+select sal from emp
+where deptno = 30;
+
+select * from emp
+where sal < any (select sal from emp
+where deptno = 30)
+order by sal, empno;
+
+#9-14 ALL
+# 30번 부서번호 인 사원들의 최소 급여보다 더 적은 급여를 받는 사원정보
+select sal from emp
+where deptno = 30;
+
+select * from emp
+where sal < all (select sal from emp
+where deptno = 30);
+
+select * from emp
+where sal < any (select sal from emp
+where deptno = 30);
+
+#EXISTS 연산자
+#서브쿼리에 값이 존재하는 경우!!
+select Dname from dept where deptno = 10;
+
+#emp테이블에서 회계부서가 존재하는가?
+select * from emp
+where exists (select Dname from dept where deptno = 10) ;
+
+#없는 50번 부서 문의?
+select * from emp
+where exists (select Dname from dept where deptno = 50) ;
+
+#비교할 열이 여러 개인 다중열 서브쿼리
+select deptno, max(sal) from emp
+group by deptno;
+
+#시험문제
+select * from emp
+where (deptno, sal) in (select deptno, max(sal) from emp
+group by deptno) ;
+
+#p.262 1
+select  job from emp
+where ename = 'ALLEN';
+
+select job, e.empno, e.ename, e.sal, d.deptno, d.dname
+from emp e , dept d
+where e.deptno = d.deptno 
+and job = (select job from emp
+where ename = 'ALLEN')
+order by sal desc, ename;
+
+select job, e.empno, e.ename, e.sal, d.deptno, d.dname
+from emp e join dept d on (e.deptno = d.deptno)
+where job = (select job from emp
+where ename = 'ALLEN')
+order by sal desc, ename;
+
+#p.262 2
+select avg(sal) from emp;
+select empno, ename, dname, TO_CHAR(hiredate,'YYYY-MM-DD') as HIREDATE ,loc, sal, grade
+from emp e, dept d, salgrade s
+where e.deptno = d.deptno
+and sal between s.losal and s.hisal
+and sal > (select avg(sal) from emp)
+order by sal desc, empno desc;
+
+select empno, ename, dname, TO_CHAR(hiredate,'YYYY-MM-DD') as HIREDATE ,loc, sal, grade
+from emp e join dept d on(e.deptno = d.deptno) 
+        join  salgrade s on (sal between s.losal and s.hisal)
+where sal > (select avg(sal) from emp)
+order by sal desc, empno desc;
+
+
+
+#DEPT 테이블이 있다. 복사해 보자 --> DEPT_TEMP4
+drop table dept_temp;
+
+create table dept_temp
+as select * from dept;
+
+select * from dept_temp;
+
+#데이터 추가 
+#50번 부서 'DATABASE' , 'SEOUL'
+insert into dept_temp (deptno, dname, loc)
+values (50,'DATABASE','SEOUL');
+
+desc dept_temp;
+
+#오타연습
+insert into dept_temp(deptno, dname, loc)
+values (60, 'NETWORK', 'BUSAN');
+
+
+#
+insert into dept_temp
+values (70, 'NETWORK2', 'ANDONG');
+
+#NULL이 가능한가
+DESC dept_temp;
+
+insert into dept_temp(deptno, loc)
+values (90, 'INCHEON');
+
+insert into dept_temp(deptno, dname, loc)
+values (80, 'MOBILE', '');
+
+
+#날짜 데이터 입력
+create table emp_temp
+as select * from emp
+where 1 <> 1 ;
+
+select * from emp_temp;
+
+insert into emp_temp
+values(9999, '홍길동', 'PRESIDENT', NULL, '2001/01/01', 5000, 1000, 10);
+
+insert into emp_temp
+values(1111, '성춘향', 'PRESIDENT', NULL, '2001-01-01', 5000, 1000, 10);
+
+insert into emp_temp
+values(1111, '성춘향', 'PRESIDENT', NULL , TO_DATE('07/01/2001', 'DD/MM/YYYY'), 5000, 1000, 10);
+
+insert into emp_temp
+values(8888, '성춘향', 'PRESIDENT', NULL, sysdate , 5000, 1000, 10);
+
+
+
+#UPDATE
+drop table dept_temp2;
+create table dept_temp2
+as select * from dept;
+
+select * from dept_temp2;
+commit;
+update dept_temp2
+set loc = 'SEOUL';
+
+ROLLBACK;
+
+#DELETE
+select * from dept_temp2;
+
+delete from dept_temp2
+where loc = 'DALLAS';
+
+rollback;
