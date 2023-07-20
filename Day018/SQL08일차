@@ -1,0 +1,325 @@
+8일차
+#dept 테이블의 내용을 복사한 테이블 dept_copy
+create table dept_copy
+as select * from dept;
+
+select * from dept_copy;
+#dept 테이블의 내용을 복사하지 않고
+구조만 복사한 테이블 dept_copy2를 만들어 보자
+create table dept_copy2
+as select * from dept
+where 1 <> 1;
+
+select * from dept_copy2;
+
+#dept_copy2 테이블에
+1, '홍길동' , '안동'
+
+desc dept_copy2;
+insert into dept_copy2(deptno,dname,loc)
+values(1 , '홍길동' , '안동');
+
+# 2, '이순신' , '통영'
+insert into dept_copy2(deptno, dname, loc)
+values(2, '이순신', '통영');
+
+# 3, '강감찬' , '평양'
+insert into dept_copy2(deptno, dname, loc)
+values(3, '강감찬', '평양');
+
+#update 강감찬 장군의 지역을 서울로 바꿔주세요.
+update dept_copy2
+set loc = '서울'
+where deptno = 3;
+
+rollback;
+commit;
+
+select * from dept_copy2;
+#1번 홍길동 데이터를 삭제해주세요.
+delete from dept_copy2
+where dname = '홍길동';
+
+#테이블삭제 emp_temp 테이블을 삭제합시다.
+drop table emp_temp;
+#emp 테이블 전체 복사 emp_temp 로 만든다.
+create table emp_temp
+as select * from emp
+where 1 <> 1;
+
+select * from emp_temp;
+#emp테이블에 아래 정보를 입력해주세요.
+#(9999, '홍길동', '사장' , '', '2001/01/01' ,5000,1000,10)
+
+insert into emp_temp
+values(9999, '홍길동', '사장' , '', '2001/01/01' ,5000,1000,10);
+
+insert into emp_temp
+values(9998,'홍길동', '사장' , '', sysdate ,5000,1000,10);
+
+#p.287 1
+create table chap10hw_emp as select * from emp;
+create table chap10hw_dept as select * from dept;
+create table chap10hw_salgrade as select * from salgrade;
+
+select * from chap10hw_emp;
+select * from chap10hw_dept;
+select * from chap10hw_salgrade;
+
+desc chap10hw_dept;
+insert into chap10hw_dept
+values(50, 'ORACLE', 'BUSAN'); 
+insert into chap10hw_dept
+values(60, 'SQL', 'ILSAN') ;
+insert into chap10hw_dept
+values (70, 'SELECT', 'INCHEON');
+insert into chap10hw_dept
+values(80, 'DML', 'BUNDANG');
+
+#p.287 2
+desc chap10hw_emp;
+insert into chap10hw_emp
+values(7201, 'TEST_USER1', 'MANAGER', 7788, '2016-01-02', 4500, '',50);
+insert into chap10hw_emp
+values(7202, 'TEST_USER2', 'CLERK', 7201, '2016-02-21', 1800, '',50);
+insert into chap10hw_emp
+values(7203, 'TEST_USER3', 'ANALYST', 7201, '2016-04-11', 3400, '',60);
+insert into chap10hw_emp
+values(7204, 'TEST_USER4', 'SALESMAN', 7201, '2016-05-31', 2700, 300,60);
+insert into chap10hw_emp
+values(7205, 'TEST_USER5', 'CLERK', 7201, '2016-07-20', 2600, '',70);
+insert into chap10hw_emp
+values(7206, 'TEST_USER6', 'CLERK', 7201, '2016-09-08', 2600, '',70);
+insert into chap10hw_emp
+values(7207, 'TEST_USER7', 'LECTURER', 7201, '2016-10-28', 2300, '',80);
+insert into chap10hw_emp
+values(7208, 'TEST_USER8', 'STUDENT', 7201, '2018-03-09', 1200, '',80);
+
+delete from chap10hw_emp
+where ename = 'TEST_USER8';
+#p.288 3
+select ename from chap10hw_emp
+where sal > (select avg(sal) from chap10hw_emp where deptno = 50);
+
+select * from chap10hw_emp
+order by deptno;
+
+update chap10hw_emp
+set deptno = 70
+where sal > (select avg(sal) from chap10hw_emp where deptno = 50);
+
+#p.288 4
+select hiredate from chap10hw_emp
+where hiredate > (select hiredate from chap10hw_emp where deptno = 60);
+
+update chap10hw_emp
+set sal  = sal * 1.1
+where hiredate > (select hiredate from chap10hw_emp where deptno = 60);
+update chap10hw_emp
+set deptno = 80
+where hiredate > (select hiredate from chap10hw_emp where deptno = 60);
+
+#p.289 5
+select * from chap10hw_emp e, chap10hw_salgrade s
+where sal between s.losal and s.hisal;
+
+delete from chap10hw_emp e
+where empno in (select e.empno from chap10hw_emp e, chap10hw_salgrade s
+                where e.sal between s.losal and s.hisal
+                and s.grade =5);
+                
+select * from  chap10hw_emp;  
+
+rollback;
+commit;
+
+
+/* 컬럼 이름 생성 규칙
+   1. 컬럼 이름은 문자로 시작해야 한다.
+   2. 컬럼 이름은 30BYTES 이하여야 한다.
+   3. 한 테이블의 컬럼 이름은 중복될 수 없다.
+   4. 컬럼 이릉은 영문자(한글), 숫자(0-9), 특수문자 사용가능
+   5. SQL 키워드는 컬럼 이름 등으로 사용할 수 없다.
+*/
+#테이블 만들기
+drop tabel emp_ddl;
+create table emp_ddl(
+        empno    number(4),
+        ename    varchar2(10),
+        job      varchar2(9),
+        mgr      number(4),
+        hiredate date,
+        sal      number(7,2),
+        comm     number(7,2),
+        deptno   number(2)
+);
+
+desc emp_ddl;
+
+#테이블 구조 변경 alter
+create table emp_alter
+as select * from emp;
+
+select * from emp_alter;
+#컬럼 추가
+alter table emp_alter
+add HP varchar2(20);
+#tel 컬럼 추가 타입은 varchar(20)
+alter table emp_alter
+add TEL varchar2(20);
+
+#TEL 컬럼 삭제!!
+alter table emp_alter
+drop column tel;
+
+desc emp_alter;
+commit;
+alter table emp_alter
+add TEL varchar2(20);
+
+select * from emp_alter;
+
+#삭제
+alter table emp_alter
+drop column TEL;
+
+#변경 HP --> TEL
+alter table emp_alter
+rename column HP to TEL;
+commit;
+
+#컬럼의 이름을 변경하는게 아닌 타입을 바꾼다.
+#EMPNO NUMBER(4) --> NUMBER(5)
+desc emp_alter;
+
+alter table emp_alter
+modify empno number(5);
+
+#ename : varchar2(10) ---> varchar2(13)
+
+alter table emp_alter
+modify ENAME varchar2(13);
+
+# TEL --> PHONENUMBER
+alter table emp_alter
+rename column TEL to PHONENUMBER;
+
+desc emp_alter;
+
+#테이블의 이름을 변경해 보세요
+#emp_alter ----> emp_rename
+rename emp_alter to emp_rename;
+select * from emp_rename;
+select * from emp_alter;
+commnit;
+
+#테이블의 데이터를 강제로 삭제하는 명령어
+truncate table emp_rename;
+select * from emp_rename;
+commit;
+
+drop table emp_rename;
+
+#p.324 1
+create table EMP_HW(
+        EMPNO    number(4),
+        ENAME    varchar2(10),
+        JOB      varchar2(9),
+        MGR      number(4),
+        Hiredate date,
+        SAL      number(7,2),
+        COMM     number(7,2),
+        DEPTNO   number(2)
+);
+
+desc emp_hw;
+
+#p.324 2
+alter table emp_hw
+add BIGO varchar2(20);
+
+#p.324 3
+alter table emp_hw
+modify BIGO varchar2(30);
+
+#p.324 4
+alter table emp_hw
+rename column BIGO to REMARK;
+
+desc emp_hw;
+
+#p. 324 5
+drop table emp_hw;
+create table emp_hw
+as select from emp;
+add column REMARK varchar2(30);
+
+
+
+#14장 제약
+#테이블 생성 시 NOT NULL 값 설정
+create table table_notnull(
+    LOGIN_ID   varchar2(20) not null,
+    LOGIN_pwd  varchar2(20) not null,
+    TEL        varchar2(20)
+);
+
+select * from table_notnull;
+
+insert into table_notnull
+values('TEST_ID_01', '1234', '010-1234-5678');
+
+insert into table_notnull
+values('TEST_ID_02', '1234', '010-1234-5678');
+
+# 나의 계정의 제약 확인해 봅시다.
+# 14-5
+select owner, constraint_name, 
+              constraint_type, table_name
+from user_constraints;
+
+
+#테이블을 만들 때 제약조건의 이름을 지정해서 만들기
+drop table tabel_notnull2;
+create table table_notnull2(
+    LOGIN_ID   varchar2(20) constraint my_logid not null,
+    LOGIN_pwd  varchar2(20) constraint my_logpwd not null,
+    TEL        varchar2(20)
+);
+
+select owner, constraint_name, 
+              constraint_type, table_name
+from user_constraints;
+
+#테이블에서 제약조건이 없는 컬럼을 제약조건 지정하기
+select * from table_notnull;
+update table_notnull 
+set tel = null;
+
+alter table table_notnull
+modify (tel not null);
+
+desc table_notnull;
+
+select * from table_notnull;
+
+commit;
+
+delete from table_notnull;
+
+#foreign key  지정하기
+#14-9 dept_ft 테이블 생성하기
+create table dept_fk(
+        deptno number(2) constraint 
+                    deptfk_deptno_pk primary key,
+        dname varchar2(14),
+        loc   varchar2(11)
+);
+drop table dept_fk;
+create table emp_fk(
+  deptno number(2) constraint empfk_deptno_fk
+         references dept_fk(deptno)
+);
+select * from emp_fk;
+
+select * from book;
