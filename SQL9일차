@@ -1,0 +1,139 @@
+#9일차
+#제약 조건 이름 직접 지정
+drop table table_notnull2;
+create table table_notnull2(
+    LOGIN_IN    varchar2(20) constraint cname_logid not null,
+    LOGiN_PWD   varchar2(20) constraint cname_logpw not null,
+    TEL         varchar(20)
+);
+
+#제약조건 확인
+select owner, constraint_name, constraint_type, table_name
+from user_constraints;
+
+commit;
+
+desc table_notnull2;
+
+alter table table_notnull2
+modify (TEL NOT NULL);
+
+
+#제약조건 이름 삭제
+alter table table_notnull2
+drop constraint SYS_C007026;
+
+#제약조건 이름 추가하기
+alter table table_notnull2
+modify (TEL CONSTRAINT CNAME_TEL NOT NULL);
+
+#중복되지 않는 값 unique
+drop table table_unique;
+create table TABLE_UNIQUE(
+    LOGIN_ID    varchar2(20) UNIQUE,
+    LOGIN_PWD   varchar2(20) NOT NULL,
+    TEL         varchar2(20)
+);
+
+desc table_unique;
+
+select owner, constraint_name, constraint_type, table_name
+from user_constraints;
+
+insert into table_unique(LOGIN_ID, LOGIN_PWD, TEL)
+values ('1', 'USER_01', '010-1111-1111');
+
+select * from table_unique;
+
+create table table_pk (
+    LOGIN_ID    varchar(20) primary key,
+    LOGIN_PWD   varchar(20) not null,
+    TEL         varchar2(20)
+);
+
+desc table_pk;
+
+#p.381
+drop table table_name;
+create table table_name(
+   COL1 varchar2(20),
+   COL2 varchar2(20),
+   COL3 varchar2(20),
+   primary key(COL1),
+   constraint constraint_name unique (COL2)
+);
+
+create table table_name(
+   COL1 varchar2(20) constraint AAA primary key,
+   COL2 varchar2(20) not null,
+   col3 varchar2(20)
+);
+
+#foreign key 지정
+#dept_fk, emp_fk
+select * from emp_fk;
+select * from dept_fk;
+drop table dept_fk;
+drop table emp_fk;
+
+create table dept_fk(
+  deptno number(2) constraint dept_pk primary key,
+  dname varchar2(14),
+  loc   varchar2(13)
+);
+
+create table emp_fk(
+    empno  number(4)  constraint emp_pk primary key,
+    deptno number(2)  constraint ccc references dept_fk (deptno)
+);
+
+select * from emp_fk;
+select * from dept_fk;
+
+desc emp_fk;
+desc dept_fk;
+
+drop table dept_fk;
+
+#14-41 ~ 43
+
+insert into emp_fk
+values(9999, 10);
+       
+select * from emp_fk;
+
+
+insert into dept_fk
+values(10, 'TEST_DNAME' , 'TEST_LOC');
+
+select * from dept_fk;
+
+CREATE TABLE DEPT_FK(
+DEPTNO NUMBER(2) CONSTRAINT DDDD PRIMARY KEY,
+DNAME VARCHAR2(14),
+LOC VARCHAR2(13)
+);
+
+CREATE TABLE EMP_FK(
+ EMPNO NUMBER(4) PRIMARY KEY,
+ DEPTNO NUMBER(2) CONSTRAINT EEEE REFERENCES DEPT_FK(DEPTNO) 
+                  ON DELETE CASCADE
+);
+DROP TABLE EMP_FK;
+DROP TABLE DEPT_FK;
+
+INSERT INTO DEPT_FK
+VALUES (1, '총무', '서울');
+INSERT INTO DEPT_FK
+VALUES (10, '회계', '서울');
+
+INSERT INTO EMP_FK
+VALUES (100,1);
+INSERT INTO EMP_FK
+VALUES (101,10);
+
+SELECT * FROM DEPT_FK;
+SELECT * FROM EMP_FK;
+
+DELETE FROM DEPT_FK
+WHERE DEPTNO = 1;
