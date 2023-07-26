@@ -1,0 +1,18 @@
+namespace A.txtQuiz
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string path = "C:\\temp\\A.text";
+            Stream sr = new FileStream(path, FileMode.Create);
+            StreamWriter sw = new StreamWriter(sr, Encoding.UTF8);
+            sw.Write("감사합니다");
+            sw.Flush();
+            sw.Close();
+
+            string path2 = "C:\\temp\\B.text";
+            File.Copy(path, path2);
+        }
+    }
+}
