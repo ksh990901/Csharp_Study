@@ -1,0 +1,35 @@
+namespace ThreadAppQuiz01
+{
+    internal class Program
+    {
+        static void Sum()
+        {
+            Thread.CurrentThread.Name = "Thread1";
+            for (int i = 1; i <= 100; i++)
+            {
+                Console.WriteLine(i++);
+            }
+        }
+        static void Alpha()
+        {
+            Thread.CurrentThread.Name = "Thread2";
+            for(int i = 'A'; i <= 'Z'; i++)
+            {
+                Console.WriteLine(i);
+            } 
+        }
+        static void Main(string[] args)
+        {
+            //Thread-1 1~100까지 더하기 출력
+            //Thread-2 A~Z까지 출력
+            //mainThread는 두 스레드가 종료될때까지 최종적으로 기다린후 종료합니다.
+            Thread.CurrentThread.Name = "Main";
+            Console.WriteLine($"스레드 정보 :{Thread.CurrentThread.ManagedThreadId}:"+
+                $"{Thread.CurrentThread.Name}");
+            Sum();
+            Thread t = new Thread(new ThreadStart(Alpha));
+            t.Name = "Thread-1";
+            t.Start();
+        }
+    }
+}
