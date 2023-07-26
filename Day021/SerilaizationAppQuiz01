@@ -1,0 +1,41 @@
+namespace SerilaizationAppQuiz01
+{
+    class Student
+    {
+        public int STID { get; set; }
+        public string Name { get; set; }
+        public string Major { get; set; }
+    }
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string path = "Student.json";
+            using (Stream ws = new FileStream(path, FileMode.Create))
+            {
+                Student nc = new Student();
+                nc.STID = 12345;
+                nc.Name = "이순신";
+                nc.Major = "스마트팩토리";
+
+                string jsonString = JsonSerializer.Serialize<Student>(nc); //직렬화
+                byte[] jsonBytes = System.Text.Encoding.UTF8.GetBytes(jsonString);
+                ws.Write(jsonBytes, 0, jsonBytes.Length);
+            }
+
+            using (Stream rs = new FileStream(path, FileMode.Open))
+            {
+                byte[] jsonBytes = new byte[rs.Length];
+                rs.Read(jsonBytes, 0, jsonBytes.Length);
+                string jsonString = System.Text.Encoding.UTF8.GetString(jsonBytes);
+
+                Student nc2 = JsonSerializer.Deserialize<Student>(jsonString);
+
+                Console.WriteLine($"학번 : {nc2.STID}");
+                Console.WriteLine($"이름 : { nc2.Name}");
+                Console.WriteLine($"전공 : {nc2.Major}");
+            }
+
+        }
+    }
+}
