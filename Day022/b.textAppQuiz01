@@ -1,0 +1,12 @@
+namespace b.textAppQuiz01
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            string path = "C:\\Temp\\A.text";
+            Stream sr = new FileStream(path, FileMode.Open);
+            StreamWriter sr2 = new StreamWriter(sr, Encoding.UTF8);
+        }
+    }
+}
