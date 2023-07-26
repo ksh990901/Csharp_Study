@@ -1,0 +1,37 @@
+namespace WinCopyApp02
+{
+    public partial class Form1 : Form
+    {
+        private string sourceFile;
+        private string destFile;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void btnDstSrc_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                if(openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    sourceFile = openFileDialog.FileName;
+                    lbnScr.Text = sourceFile;
+                }
+            }
+        }
+
+        private void btnDstDtn_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                if(saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    destFile = saveFileDialog.FileName;
+                    File.Copy(sourceFile, destFile);
+                    lbnDtn.Text = "파일복사완료" + destFile;
+                }
+            }
+        }
+    }
+}
