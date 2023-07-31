@@ -1,0 +1,41 @@
+namespace DigitalClock
+{
+    public partial class Form1 : Form
+    {
+        private DateTime NowTime;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        public void GetTime()
+        {
+            NowTime = DateTime.Now; 
+        }
+
+        public void Outtime()
+        {
+            label1.Text = (NowTime + "\r\n");
+        }
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            await Task.Run(() => {
+                while (true)
+                {
+                    GetTime();
+                    this.Invoke(new Action(() =>
+                    {
+                        Outtime();
+                    }));
+                    Thread.Sleep(1000);
+                }
+            });
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            button2.Click += new EventHandler(button2_Click);
+            Dispose();
+        }
+    }
+}
