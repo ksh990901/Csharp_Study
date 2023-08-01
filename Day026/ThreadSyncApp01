@@ -1,0 +1,49 @@
+namespace ThreadSynvApp01
+{
+    class Counter
+    {
+        public int count = 0;
+        private readonly object thisLock = new object();
+        public void Increase()
+        {
+            lock(thisLock) 
+            {
+                int temp = count;
+                Thread.Sleep(1);
+                count = temp + 1; 
+            }
+           
+        }
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Counter counter = new Counter();
+            Thread[] t1 = new Thread[500];
+
+            for (int i = 0; i < 500; i++)
+            {
+                t1[i] = new Thread(counter.Increase);
+                t1[i].Start();
+            }
+            for(int i = 0; i < 500; i++)
+            { 
+                t1[i].Join();
+            }
+
+            //Thread t2 = new Thread(counter.Increase);
+            //Thread t3 = new Thread(counter.Increase);
+
+            //t1.Start();
+            //t2.Start();
+            //t3.Start();
+
+            //t1.Join();
+            //t2.Join();
+            //t3.Join();
+
+            Console.WriteLine(counter.count);
+        }
+    }
+}
