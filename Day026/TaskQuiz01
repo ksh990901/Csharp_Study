@@ -1,0 +1,28 @@
+namespace TaskQuiz01
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var task1 = Task.Run(() =>
+            {
+                int sum = 0;
+                for (int i = 1; i <= 100; i++)
+                {
+                    sum += i;
+                }
+                Console.WriteLine(sum);
+            });
+            task1.Wait();
+
+            var task2 = Task.Run(() =>
+            {
+                for (char i = 'A'; i <= 'Z'; i++)
+                {
+                    Console.Write(i + " ");
+                }
+            });
+            task2.Wait();
+        }
+    }
+}
