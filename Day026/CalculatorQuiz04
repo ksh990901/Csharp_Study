@@ -1,0 +1,49 @@
+namespace CalculatorQuiz04
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int Jumsu;
+            string Hakjum;
+            if(textBox1.Text == "")
+            {
+                MessageBox.Show("점수를 입력하세요", "경고 1");
+                goto Nagayo;
+            }
+            Jumsu = int.Parse(textBox1.Text);
+            if(Jumsu > 100 || Jumsu < 0) 
+            {
+                MessageBox.Show("0~100 사이의 점수를 입력하세요", "경고 2");
+                goto Nagayo;
+            }
+            if (Jumsu >= 96)
+                Hakjum = "A+";
+            else if (Jumsu >= 91)
+                Hakjum = "A0";
+            else if (Jumsu >= 86)
+                Hakjum = "B+";
+            else if (Jumsu >= 81)
+                Hakjum = "B0";
+            else if (Jumsu >= 76)
+                Hakjum = "C+";
+            else if (Jumsu >= 71)
+                Hakjum = "C0";
+            else if (Jumsu >= 66)
+                Hakjum = "D+";
+            else if (Jumsu >= 60)
+                Hakjum = "D0";
+            else
+                Hakjum = "F:재수강";
+            textBox2.Text = Hakjum;
+            Nagayo: textBox1.Focus();
+            textBox1.SelectionStart = 0;
+            textBox1.SelectionLength = textBox1.TextLength;
+        }
+    }
+}
