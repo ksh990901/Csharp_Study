@@ -1,0 +1,31 @@
+namespace TaskApp01
+{
+    class MainApp
+    {
+        static void Main(string[] args)
+        {
+            //main 동작중....
+            Action someAction = () =>
+            {
+                //1. 1~100까지 더하기
+                //2. A ~ Z까지 출력
+                Console.WriteLine("SomeAction");
+            };
+
+            Task myTask1 = new Task(someAction); //Action 대리자 구현부
+            myTask1.Start();
+            myTask1.Wait(); //Join()
+
+
+            Task myTask2 = Task.Run(() =>
+            {
+                Console.WriteLine("someAction2");
+            });
+
+            myTask2.Wait(); //Join()
+
+
+            Console.WriteLine("main 종료");
+        }
+    }
+}
