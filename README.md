@@ -114,3 +114,32 @@ kernel
 
 객체지향 프로그래밍(OOP--> 협업, 코드품질, 유지보수비용 절감...)
 개발방법론(RUP, 애자일)
+
+
+
+
+C# Low Level 그리기 함수
+
+
+
+1. DrawLine(Pen pen, Point pt1, Point pt2): 두 점을 연결하는 선을 그립니다.
+
+2. DrawLines(Pen pen, Point[] points): 배열에 저장된 점들을 순서대로 연결하는 선을 그립니다.
+
+3. DrawRectangle(Pen pen, Rectangle rect): 주어진 사각형을 그립니다.
+
+4. DrawRectangles(Pen pen, Rectangle[] rects): 주어진 사각형 배열의 모든 사각형을 그립니다.
+
+5. DrawEllipse(Pen pen, RectangleF rect): 주어진 사각형에 내접하는 타원을 그립니다.
+
+6. DrawPolygon(Pen pen, Point[] points): 주어진 점들을 사용하여 다각형을 그립니다.
+
+7. DrawPie(Pen pen, Rectangle rect, float startAngle, float sweepAngle): 주어진 사각형에 내접하는 원의 부분을 그립니다. 시작 각도와 스윕 각도를 기반으로 파이 조각을 그립니다.
+
+8. DrawArc(Pen pen, RectangleF rect, float startAngle, float sweepAngle): 주어진 사각형에 내접하는 원호를 그립니다.
+
+
+
+도형들을 채우는 함수 FillRectangle, FillPolygon, FillEllipse, FillPie 등의 메서드를 사용하면 도형 안을 색칠할 수 있습니다.
+
+이러한 메서드들을 사용하려면 먼저 Pen 또는 Brush 객체를 생성해야 합니다. 이들 객체는 도형의 외곽선 색상, 선의 두께, 또는 도형의 내부 색상을 정의합니다.
