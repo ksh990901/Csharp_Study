@@ -1,0 +1,28 @@
+namespace SimpleTCPServerQuiz
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            IPAddress localAddr = IPAddress.Parse("192.168.41.62");
+            int port = 13000;
+
+            TcpListener server = new TcpListener(localAddr, port);
+            server.Start();
+            Console.WriteLine("서버 시작...");
+            using (TcpClient client = server.AcceptTcpClient())
+            {
+                Console.WriteLine("연결 성공...");
+                using (NetworkStream stream = client.GetStream())
+                {
+                    byte[] data = File.ReadAllBytes(@"./Screenshot_1.png");
+                    stream.Write(data, 0, data.Length);
+                    Console.WriteLine("전송이 완료되었습니다.");
+                }
+            }
+            //client.Close() using 구문 사용하지 않았을 경우 작성
+            //stream.Close()
+            server.Stop();
+        }
+    }
+}
