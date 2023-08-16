@@ -1,2 +1,9 @@
 
 dotnet new webapi -o WebApp002 --no-https -f net7.0
+cd..
+cd file
+mkdir file
+dir/w
+dotnet watch
+dotnet
+dir s/q/ file
