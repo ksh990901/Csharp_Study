@@ -1,0 +1,2 @@
+
+dotnet new webapi -o WebApp002 --no-https -f net7.0
