@@ -1,0 +1,10 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "First My Web App";
+}
+
+<div>
+    <h1> 환영합니다. </h1>
+    <p>ASP.Net Core를 공부해봅시다.</p>
+</div>
