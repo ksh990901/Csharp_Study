@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table, th, tr ,td{
+            border : solid 1px black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    
+    <Form>
+        <table>
+            <tr>
+                <td>이름</td>
+                <td><INPUT TYPE = "text" Name = "text"></td>
+            </tr>
+             <tr>
+                <td>나이</td>
+                <td><INPUT TYPE = "age" Name = "age"></td>
+                </tr>
+                <tr>
+                <td>패스워드</td>
+                <td><INPUT TYPE = "password" Name = "pwd"></td>
+                </tr>
+                </table>
+
+          개인정보 : <INPUT TYPE = "radio" NAME = "info" CHECKED> 공개
+                    <INPUT TYPE = "radio" NAME = "info"> 비공개<br>
+          취미 :  <INPUT TYPE = "checkbox" NAME = "hobby"> 등산
+                 <INPUT TYPE = "checkbox" NAME = "hobby" checked> 독서
+                 <INPUT TYPE = "checkbox" NAME = "hobby" checked> 영화감상
+                 <INPUT TYPE = "checkbox" NAME = "hobby"> 음악감상
+                 <p>
+          이메일 : <INPUT TYPE = "text">@
+                   <select>
+                         <option>선택</option>
+                         <option>naver.com</option>
+                         <option>daum.net</option>
+                         <option>gmail.com</option>
+                         <option>직접입력</option>
+                   </select>  <P>
+            내용 : <textarea rows = "10" cols = "30"></textarea>  
+            <br>
+            <button type = "button">검색</button>  
+            <button type = "submit">확인</button>  
+            <button type = "reset">되돌리기</button>
+            <p>
+            파일첨부 : <INPUT TYPE = "file">*2MB까지 가능
+            <p>
+            <INPUT TYPE = "color"><br>    
+            <INPUT TYPE = "datetime-local"><br>    
+            <INPUT TYPE = "month"><br> 
+            <INPUT TYPE = "number"><br>  
+            <INPUT TYPE = "range"><br>  
+            <INPUT TYPE = "time"><br>
+            <INPUT TYPE = "week"><br>
+
+
+    </Form>
+
+</body>
+</html>
