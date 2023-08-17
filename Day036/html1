@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h1>그림 테스트</h1>
+    <img src = "../img/newjeans.jpg" width = "200" title = "뉴진스">
+    <p>
+        <img src = "../img/newjeans01.jpg" width = "200" title = "아이돌">
+    <p>
+    <img src = "https://storage.heypop.kr/assets/2023/08/16180142/%E1%84%86%E1%85%A6NJS_gangnam6.jpg" width = "300"> 
+</body>
+</html>
