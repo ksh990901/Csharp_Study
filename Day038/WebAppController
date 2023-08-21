@@ -1,0 +1,19 @@
+sing Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews(); //MVC패턴으로  
+var app = builder.Build();
+
+//app.MapDefaultControllerRoute();
+//app.MapGet("/", () => "Hello World!");
+
+
+app.MapControllerRoute(
+    name: "default",
+      //pattern: "{controller=Home}/{action=Index}/{id?}"
+      //pattern: "{controller=Fisrt}/{action=Fisrt}/{id?}"
+      pattern: "{controller=Home}/{action=About}/{id?}"
+
+    );
+
+app.Run();
