@@ -1,0 +1,34 @@
+Program.cs
+
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+var app = builder.Build();
+
+//app.MapGet("/", () => "Hello World!");
+
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=My}/{action=Help}/{id?}"
+//    );
+app.MapControllers();
+app.Run();
+
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebEmpty_Test1.Controllers
+{
+    public class HomeController : Controller
+    {
+        [Route ("/Home")]   
+        public IActionResult Index()
+        {
+            return View();
+        }
+        [Route("/About")]
+        public IActionResult About() 
+        {
+            return View();
+        }
+    }
+}
