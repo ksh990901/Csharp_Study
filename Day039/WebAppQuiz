@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        <div style="background-color: skyblue">Header</div>
+        @RenderBody()
+        <div>ksn4326@gmail.com</div>
+    </div>
+</body>
+</html>
+
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebAppQuiz.Controllers
+{
+    public class HomeController : Controller
+    {
+        [Route("/")]
+        public IActionResult Contact()
+        {
+            return View();
+        }
+    }
+}
