@@ -1,0 +1,54 @@
+About.cshtml
+@{
+    ViewData["Title"] = "About";
+}
+
+<h1>About</h1>
+
+<h2>구구단</h2>
+@{
+    for (int i = 2; i <= 9; i++)
+    {
+        for (int j = 1; j <= 9; j++)
+        {
+            int result = (i * j);
+            <h3>@i * @j = @result</h3>
+        }
+    }
+}
+
+
+
+index.cshtml
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<h1>현재 시간은 @DateTime.Now</h1>
+<h2>올해 연도는 @DateTime.Now.Year</h2>
+
+@{
+    var name="홍길동";
+    var age = 20; 
+}
+<h2>이름 : @name</h2>
+<h2>나이 : @age</h2>
+
+@{
+    for(int i = 1; i<6; i++)
+    {
+        <span>@i</span>
+        ;
+    }
+    <br />
+}
+
+@{
+    string[] fruits = { "사과", "배", "딸기" };
+    foreach(var item in fruits)
+    {
+        <h3>@item</h3>
+    }
+}
