@@ -1,0 +1,41 @@
+@page
+<h2>날짜를 입력해주세요.</h2>
+
+
+<form method="post">
+    <label for="date1">여자(남자)친구와 만난 날</label>
+    <input type="date" id="date1" name="date1" required />
+    <br />
+    <label for="date2">특정 날짜의 날</label>
+    <input type="date" id="date2" name="date2" required />
+    <br />
+    <input type="submit" value="계산" />
+</form>
+
+@if (ViewBag.Result != null)
+{
+    <h3>만난일이 @ViewBag.Result 일 되는 날입니다.</h3>
+}
+
+
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebSimpleDay.Controllers
+{
+    public class HomeController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(DateTime date1, DateTime date2) 
+        {
+            TimeSpan result = date2 - date1;
+            ViewBag.Result = result.Days;  
+            return View();
+        }
+    }
+}
