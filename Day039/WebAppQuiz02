@@ -1,0 +1,9 @@
+@{
+    ViewData["Title"] = "About";
+}
+
+<h1>날짜</h1>
+@{
+    <h2>오늘은 @DateTime.Now.ToString("yyyy년 M월 dd일") 입니다.</h2>
+}
+
