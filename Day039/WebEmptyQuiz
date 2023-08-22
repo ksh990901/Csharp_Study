@@ -1,0 +1,56 @@
+HomeControllers
+namespace WebEmtyQuiz.Controllers
+{
+    public class HomeController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(int number1, int number2)
+        {
+            ViewBag.Result1 = number1 + number2;
+            ViewBag.Result2 = number1 - number2;
+            ViewBag.Result3 = number1 * number2;
+            ViewBag.Result4 = number1 / number2;
+
+            return View();
+        }
+    }
+}
+
+index.cs
+@page
+<h2>두 정수를 넣어주세요.</h2>
+
+<form method="post">
+    <label for="number1">숫자 1:</label>
+    <input type="number" id="number1" name="number1" required />
+    <br />
+    <label for="number2">숫자 2:</label>
+    <input type="number" id="number2" name="number2" required />
+    <br />
+    <input type="submit" value="더하기" />
+    <input type="submit" value="빼기" />
+    <input type="submit" value="곱하기" />
+    <input type="submit" value="나누기" />
+</form>
+
+@if (ViewBag.Result1 != null)
+{
+    <h3>더하기: @ViewBag.Result1</h3>
+}
+@if (ViewBag.Result2 != null)
+{
+    <h3>빼기: @ViewBag.Result2</h3>
+}
+@if (ViewBag.Result3 != null)
+{
+    <h3>곱하기: @ViewBag.Result3</h3>
+}
+@if (ViewBag.Result4 != null)
+{
+    <h3>나누기: @ViewBag.Result4</h3>
+}
