@@ -1,0 +1,36 @@
+HomeController
+
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebEmpty_LayOut.Controllers
+{
+    public class HomeController : Controller
+    {
+        public IActionResult Index()
+        {
+            return View();
+        }
+        [Route("About")]
+        public IActionResult About()
+        {
+            return View();
+        }
+        public IActionResult Contact()
+        {
+            return View();  
+        }
+    }
+}
+
+Program.cs
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+var app = builder.Build();
+
+//app.MapGet("/", () => "Hello World!");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+app.Run();
