@@ -1,0 +1,9 @@
+1. 기존 Oracle 11g Express 제어판 삭제
+   .sql --> 
+   재시작
+
+2. Oracle 18c Express 설치
+
+3. 계정등록, 권한 부여
+   c##scott/tiger
+   grant 권한   

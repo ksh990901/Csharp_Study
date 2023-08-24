@@ -1,0 +1,26 @@
+SQL 접속
+SQL*Plus: Release 18.0.0.0.0 - Production on 목 8월 24 15:09:51 2023
+Version 18.4.0.0.0
+
+Copyright (c) 1982, 2018, Oracle.  All rights reserved.
+
+사용자명 입력: system
+비밀번호 입력:
+
+다음에 접속됨:
+Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
+Version 18.4.0.0.0
+
+SQL> create user c##scott identified by tiger;
+
+사용자가 생성되었습니다.
+
+SQL> grant connect,resource, dba to c##scott;
+
+권한이 부여되었습니다.
+
+SQL> commit;
+
+커밋이 완료되었습니다.
+
+SQL>
