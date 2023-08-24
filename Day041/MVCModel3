@@ -1,0 +1,85 @@
+index
+@{
+    ViewData["Title"] = "Home Page";
+    var cars = ViewData["data"] as List<Car>;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+
+
+<div>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Brand</th>
+        <th>Speed</th>
+    </tr>
+@foreach(var item in cars){
+    <tr>
+            <td> <h3>@item.ID</h3></td>
+          
+            <td> <h3>@item.Brand</h3></td>
+           
+            <td>  <h3>@item.Speed</h3></td>   
+    </tr>
+}
+</table>
+    </div>
+
+car
+namespace MVCModel03.Models
+{
+    public class Car
+    {
+        public int ID { get; set; }
+        public string Brand { get; set; }
+        public int Speed { get; set; }
+    }
+}
+
+HomeControllers
+using Microsoft.AspNetCore.Mvc;
+using MVCModel03.Models;
+using System.Diagnostics;
+
+namespace MVCModel03.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+
+
+        public IActionResult Index()
+        {
+            var car = new List<Car>
+            {
+                new Car {ID = 1, Brand = "Benz", Speed = 230},
+                new Car {ID = 2, Brand = "BMW", Speed = 240},
+                new Car {ID = 3, Brand = "Hyundai", Speed = 220}
+            };
+
+            ViewData["data"] = car;
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
