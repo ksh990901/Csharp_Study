@@ -1,0 +1,95 @@
+Models
+namespace BootStrap01.Models
+{
+    public class Student
+    {
+        public int Id { get; set; }
+        public Gender Gender { get; set; }
+        public string Name { get; set; }
+        public Uni IsEmployed { get; set; } 
+        public string Hp { get; set; }
+        public int Age { get; set; }
+        public string Email {get; set;}
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female
+    }
+
+    public enum Uni
+    {
+        자연과학대,
+            공과대,
+            사회과학대,
+            사범대
+    }
+}
+
+Index
+
+@model BootStrap01.Models.Student
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="container">
+    <h2 class="display-4">학생정보 입력창</h2>
+   
+    <img src="~/images/new_04.jpg" asp-append-version="true" width="400" height="100"/>
+
+</div>
+<div class= "container">
+    <div class = "col-sm-4">
+        <form method = "get" action="./">
+            <label asp-for="Id">학번</label>
+            <input asp-for="Id"
+                   placeholder="학번8자리를 입력해주세요."
+                   class="form-control" />
+           <br /> 
+            <label asp-for="IsEmployed">대학</label>
+            <select asp-for="IsEmployed"
+                    class="form-control"
+                    asp-items="Html.GetEnumSelectList<Uni>()">
+                <option value="">대학을 입력해 주세요.</option>
+            </select>
+            <br />
+            <label asp-for = "Name">이름 </label>
+            <input asp-for = "Name"
+            placeholder = "이름을 입력해주세요."
+            class = "form-control" />
+            <br />
+            <label asp-for = "Gender">성별</label>
+            <select asp-for = "Gender"
+            class = "form-control"
+            asp-items="Html.GetEnumSelectList<Gender>()">
+            <option value = "">성별을 입력해 주세요.</option>
+            </select>
+            <br />
+            <label asp-for="Age">나이</label>
+            <input asp-for="Age"
+             placeholder="나이를 입력하세요."
+             class="form-control" />
+            <br />
+            <label asp-for="Hp">전화번호</label>
+            <input asp-for="Hp"
+                   placeholder="전화번호를 입력하세요."
+                   class="form-control" />
+            <br />
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">이메일</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">건의사항</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+                <input type="submit" value="제출"
+                   class=" btn btn-primary" />
+           <td></td>
+                <input type="submit" value="취소"
+                   class=" btn btn-danger" />
+        </form>
+    </div>
+</div>
