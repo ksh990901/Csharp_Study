@@ -1,0 +1,51 @@
+Index
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<h1 class= "bg-primary">Index</h1>
+<h1 class= "bg-success">Index</h1>
+
+
+_Layout
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+	<link href="~/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+	<link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+	<script src="~/lib/jquery/jquery.js"></script>
+	<script src="~/lib/jquery/jquery.min.js"></script>
+	<script src="~/lib/jquery/jquery.slim.js"></script>
+	<script src="~/lib/jquery/jquery.slim.min.js"></script>
+	
+
+</body>
+</html>
+
+Program
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+var app = builder.Build();
+
+//app.MapGet("/", () => "Hello World!");
+app.UseStaticFiles();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+
+app.Run();
+
+
