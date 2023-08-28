@@ -1,0 +1,128 @@
+using Oracle.ManagedDataAccess.Client;
+
+namespace ConsoleApp1
+{
+	internal class Program
+	{
+		static void Main(string[] args)
+		{
+			string name, phone;
+
+			int id;
+			while (true)
+			{
+				string strConn = "Data Source=(DESCRIPTION=" +
+			  "(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)" +
+			  "(HOST=localhost)(PORT=1521)))" +
+			  "(CONNECT_DATA=(SERVER=DEDICATED)" +
+			  "(SERVICE_NAME=xe)));" +
+			  "User Id=c##scott;Password=tiger;";
+				//1.연결 객체 만들기 - Client
+				OracleConnection conn = new OracleConnection(strConn);
+				//2.데이터베이스 접속을 위한 연결
+				conn.Open();
+				//3.서버와 함께 신나게 놀기
+				//3.1 Query 명령객체 만들기
+				OracleCommand cmd = new OracleCommand();
+
+				cmd.Connection = conn; //연결객체와 연동
+				Console.WriteLine("1. 테이블 만들기");
+				Console.WriteLine("2. 테이블 삭제");
+				Console.WriteLine("3. 데이터 추가");
+				Console.WriteLine("4. 데이터 수정");
+				Console.WriteLine("5. 데이터 삭제");
+				Console.WriteLine("7. 프로그램 종료");
+				Console.WriteLine("--------------------");
+
+				int a = int.Parse(Console.ReadLine());
+
+				switch (a)
+				{
+					case 1:
+						//3.2 명령하기, 테이블 생성하기
+						cmd.CommandText = "Create Table adressbook " +
+							"(ID number(4) PRIMARY KEY,  " +
+							"BOOkNAME varchar2(20), " +
+							" varchar2(20))";
+						//3.3 쿼리 실행하기
+						try
+						{
+							cmd.ExecuteNonQuery();
+							Console.WriteLine(" 테이블이 생성되었습니다. ");
+						}
+						catch { Console.WriteLine("이미 데이터베이스가 있습니다. "); }
+						//4. 리소스 반환 및 종료
+						break;
+					case 2:
+						Console.WriteLine();
+						cmd.CommandText = "drop table adressbook";
+						//3.3 쿼리 실행하기
+						try
+						{
+							cmd.ExecuteNonQuery();
+							Console.WriteLine(" 테이블이 삭제되었습니다. ");
+						}
+						catch { Console.WriteLine("테이블이 없습니다."); }
+						conn.Close();
+						break;
+					case 3:
+						Console.WriteLine();
+						Console.Write("이름을 입력해주세요 : ");
+						name = Console.ReadLine();
+						Console.Write("전화번호를 입력해주세요 : ");
+						phone = Console.ReadLine();
+						cmd.CommandText = "insert into adressbook (ID,NAME,HP) " + " values (seq_a1.nextval, '" + name + "','" + phone + "')";
+						//3.3 쿼리 실행하기
+						cmd.ExecuteNonQuery();
+						Console.WriteLine(" 데이터가 삽입되었습니다. ");
+						conn.Close();
+						break;
+					case 4:
+						Console.WriteLine();
+						Console.Write("삭제할 ID를 입력해주세요 : ");
+						int b = int.Parse(Console.ReadLine());
+						cmd.CommandText = "delete from adressbook where ID= " + b;
+						cmd.ExecuteNonQuery();
+						Console.WriteLine(" 데이터가 삭제되었습니다. ");
+						conn.Close();
+						break;
+					case 5:
+						Console.WriteLine();
+						Console.Write("수정할 ID를 입력해주세요 : ");
+						id = int.Parse(Console.ReadLine());
+						Console.Write("수정할 이름를 입력해주세요 : ");
+						name = Console.ReadLine();
+						Console.Write("수정할 전화번호를 입력해주세요 : ");
+						phone = Console.ReadLine();
+						cmd.CommandText = "update adressbook set name='" + name + "' , hp = '" + phone + "' where id=" + id;
+						cmd.ExecuteNonQuery();
+						conn.Close();
+						break;
+					case 6:
+						Console.Write("검색할 ID를 입력해주세요 : ");
+						id = int.Parse(Console.ReadLine());
+						cmd.CommandText = "select * from adressbook where id = " + id;
+						OracleDataReader rdr = cmd.ExecuteReader();
+						while (rdr.Read())
+						{
+							id = int.Parse(rdr["ID"].ToString());
+							name = rdr["name"] as string;
+							phone = rdr["hp"] as string;
+							Console.WriteLine($"ID NAME         HP");
+							Console.WriteLine($"{id} {name} {phone}");
+						}
+						cmd.ExecuteNonQuery();
+						conn.Close();
+						break;
+					case 7:
+						conn.Close();
+						Environment.Exit(0);
+						break;
+					default:
+						Console.WriteLine();
+						break;
+				}
+			}
+		}
+	}
+}
