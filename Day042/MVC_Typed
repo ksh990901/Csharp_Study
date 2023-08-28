@@ -1,0 +1,100 @@
+HomeControllers
+
+using Microsoft.AspNetCore.Mvc;
+using MVC_Typed.Models;
+using System.Diagnostics;
+namespace MVC_Typed.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+        public IActionResult Index()
+        {
+            //Employee obj = new Employee
+            //{
+            //    EmpId = 100,
+            //    EmpName = "홍길동",
+            //    Designation = "대리",
+            //    Salary = 25000
+            //};
+            // 1. ViewData["data1"] = obj;
+            // 2. ViewBag.Employee = obj;
+            // 3. TempData["data1"] = obj;
+            // 4. Strongly Type;
+            //return View(obj);
+            var myEmployees = new List<Employee>
+            {
+                new Employee {EmpId = 100, EmpName = "홍길동" , Designation = "대리" ,Salary = 30000 },
+                new Employee {EmpId = 100, EmpName = "이순신" , Designation = "부장" ,Salary = 60000 },
+                new Employee {EmpId = 100, EmpName = "강감찬" , Designation = "상무" ,Salary = 70000 },
+            };
+            return View(myEmployees);
+        }
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+
+Models
+
+namespace MVC_Typed.Models
+{
+    public class Employee
+    {
+        public int EmpId { get; set; }
+        public string EmpName { get; set; }
+        public string Designation { get; set; }
+        public int Salary { get; set; }
+    }
+}
+
+Program
+
+namespace MVC_Typed
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            // Add services to the container.
+            builder.Services.AddControllersWithViews();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            app.Run();
+        }
+    }
+}
