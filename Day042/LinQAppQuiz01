@@ -1,0 +1,63 @@
+using System.Collections.Generic;
+using System.Reflection.Emit;
+using System;
+using Microsoft.EntityFrameworkCore;
+
+namespace LinQAppQuiz01
+{
+    public class Book
+    {
+        public int No { get; set; } 
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public int Num { get; set; }
+
+    }
+    public class BookContext : DbContext
+    {
+        public DbSet<Book> Book { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseOracle("User Id=c##scott;Password=tiger;Data Source=127.0.0.1/XE;");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Book>()   
+                .HasKey(p => p.No);
+
+            modelBuilder.Entity<Book>()  
+                .Property(p => p.Name)
+                .HasMaxLength(30);
+
+            modelBuilder.Entity<Book>()
+                .Property(p => p.Type)
+                .HasMaxLength(30);
+
+            modelBuilder.Entity<Book>()
+               .Property(p => p.Num)
+               .HasMaxLength(30);
+        }
+        internal class Program
+        {
+            static void Main(string[] args)
+            {
+                using (var context = new BookContext())
+                {
+                    // 데이터베이스와 테이블 생성 (필요한 경우)
+                    context.Database.EnsureDeleted(); //문제가 있을 시 사용하세요. 단 계정에 묶인 타 테이블들도 모두 지워집니다.
+                    context.Database.EnsureCreated();
+                    // 데이터 삽입
+                    var books = new List<Book>
+                {
+                    new Book { No = 1, Name = "북" , Type = "소설" , Num = 111}
+                };
+                    context.Book.AddRange(books);
+                    context.SaveChanges();
+                    Console.WriteLine("데이터 삽입 성공!");
+                }
+            }
+        }
+    }
+}
