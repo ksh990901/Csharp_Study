@@ -1,0 +1,276 @@
+HomeControllers
+
+using Microsoft.AspNetCore.Mvc;
+using MVC_CRUD.Models;
+using System.Diagnostics;
+
+namespace MVC_CRUD.Controllers
+{
+    public class HomeController : Controller
+    {
+            private readonly StudentDbContext _context;
+            public HomeController(StudentDbContext context)
+            {
+                _context = context;
+            }
+            public IActionResult Index()
+            {
+                var students = _context.Student.ToList();
+                return View(students);
+            }
+
+        // Get 화면
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: 삽입기능
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Name,Hp")] Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(student);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(student);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSelected(List<int> selectedStudents)
+        {
+            var studentsToDelete = _context.Student.Where(s => selectedStudents.Contains(s.Id)).ToList();
+
+            _context.Student.RemoveRange(studentsToDelete);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+
+        }
+
+        public IActionResult Update(Student std)
+        {
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+
+Student
+
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace MVC_CRUD.Models
+{
+    public class Student
+    {
+            [Key]
+            [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Hp { get; set; }
+        }
+    }
+
+StudentDbContext
+
+using Microsoft.EntityFrameworkCore;
+
+namespace MVC_CRUD.Models
+{
+    public class StudentDbContext : DbContext
+    {
+            public StudentDbContext(DbContextOptions options) : base(options)
+            {
+            }
+            public DbSet<Student> Student { get; set; }
+        }
+    }
+
+Create
+
+@model MVC_CRUD.Models.Student
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hp" class="control-label"></label>
+                <input asp-for="Hp" class="form-control" />
+                <span asp-validation-for="Hp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+Index
+
+@model IEnumerable<MVC_CRUD.Models.Student>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<h2>Students</h2>
+
+
+
+<form method="post" action="/Home/DeleteSelected">
+    <button type="button" class="btn btn-outline-primary" onclick="location.href='/Home/Create'">삽입</button>
+    <button type="button" class="btn btn-outline-primary" onclick="location.href='/'">목록</button>
+    <button type="submit" class="btn btn-outline-danger">삭제</button>
+    <button type="button" class="btn btn-outline-primary" onclick="location.href='/Home/Update'">수정</button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th> <!-- 체크박스 컬럼 추가 -->
+                <th>Id</th>
+                <th>Name</th>
+                <th>Hp</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <td><input type="checkbox" value="@student.Id" name="selectedStudents" /></td>
+                    <td>@student.Id</td>
+                    <td>@student.Name</td>
+                    <td>@student.Hp</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
+
+Update
+
+@model MVC_CRUD.Models.Student
+
+@{
+    ViewData["Title"] = "Update";
+}
+
+<h1>Update</h1>
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hp" class="control-label"></label>
+                <input asp-for="Hp" class="form-control" />
+                <span asp-validation-for="Hp" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
+Program
+
+using Microsoft.EntityFrameworkCore;
+using MVC_CRUD.Models;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+//appsetting.json --> connectionString
+var provider = builder.Services.BuildServiceProvider();
+var config = provider.GetRequiredService<IConfiguration>();
+builder.Services.AddDbContext<StudentDbContext>(item => 
+            item.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Run();
