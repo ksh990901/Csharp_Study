@@ -1,0 +1,295 @@
+HomeControllers
+
+using Microsoft.AspNetCore.Mvc;
+using Score.Models;
+using System.Diagnostics;
+
+namespace Score.Controllers
+{
+    public class HomeController : Controller
+    {
+        private readonly ILogger<HomeController> _logger;
+
+        public HomeController(ILogger<HomeController> logger)
+        {
+            _logger = logger;
+        }
+        
+        public IActionResult Index()
+        {
+            return View();
+        }
+       
+        public IActionResult Result(int Language, int Math, int Science, int Society, int History)
+        {
+            if ( 95 <= Language && Language <= 100)
+            {
+                ViewBag.Result1 = 4.5;
+            }
+            else if (90 <= Language && Language <= 95)
+            {
+                ViewBag.Result1 = 4.0;
+            }
+            else if (85 <= Language && Language <= 90)
+            {
+                ViewBag.Result1 = 3.5;
+            }
+            else if (80 <= Language  && Language <= 85)
+            {
+                ViewBag.Result1 = 3.0;
+            }
+            else if (75<= Language && Language <= 80)
+            {
+                ViewBag.Result1 = 2.5;
+            }
+            else if ( 70<= Language && Language <= 75)
+            {
+                ViewBag.Result1 = 2.0;
+            }
+            else if (65<= Language && Language <= 70)
+            {
+                ViewBag.Result1 = 1.5;
+            }
+            else if (Language <= 65)
+            {
+                ViewBag.Result1 = 1.0;
+            }
+
+            if (95 <= Math && Math <= 100)
+            {
+                ViewBag.Result2 = 4.5;
+            }
+            else if (90 <= Math && Math <= 95)
+            {
+                ViewBag.Result2 = 4.0;
+            }
+            else if (85 <= Math && Math <= 90)
+            {
+                ViewBag.Result2 = 3.5;
+            }
+            else if (80 <= Math && Math <= 85)
+            {
+                ViewBag.Result2 = 3.0;
+            }
+            else if (75 <= Math && Math <= 80)
+            {
+                ViewBag.Result2 = 2.5;
+            }
+            else if (70 <= Math && Math <= 75)
+            {
+                ViewBag.Result2 = 2.0;
+            }
+            else if (65 <= Math && Math <= 70)
+            {
+                ViewBag.Result2 = 1.5;
+            }
+            else if (Math <= 65)
+            {
+                ViewBag.Result2 = 1.0;
+            }
+
+            if (95 <= Science && Science <= 100)
+            {
+                ViewBag.Result3 = 4.5;
+                ViewBag.Alpha3 = "A+";
+            }
+            else if (90 <= Science && Science <= 95)
+            {
+                ViewBag.Result3 = 4.0;
+                ViewBag.Alpha3 = "A";
+            }
+            else if (85 <= Science && Science <= 90)
+            {
+                ViewBag.Result3 = 3.5;
+                ViewBag.Alpha3 = "B+";
+            }
+            else if (80 <= Science && Science <= 85)
+            {
+                ViewBag.Result3 = 3.0;
+                ViewBag.Alpha3 = "B";
+            }
+            else if (75 <= Science && Science <= 80)
+            {
+                ViewBag.Result3 = 2.5;
+                ViewBag.Alpha3 = "C+";
+            }
+            else if (70 <= Science && Science <= 75)
+            {
+                ViewBag.Result3 = 2.0;
+                ViewBag.Alpha3 = "C";
+            }
+            else if (65 <= Science && Science <= 70)
+            {
+                ViewBag.Result3 = 1.5;
+                ViewBag.Alpha3 = "D+";
+            }
+            else if (Science <= 65)
+            {
+                ViewBag.Result3 = 1.0;
+                ViewBag.Alpha3 = "D";
+            }
+
+            if (95 <= Society && Society <= 100)
+            {
+                ViewBag.Result4 = 4.5;
+                ViewBag.Alpha4 = "A+";
+            }
+            else if (90 <= Society && Society <= 95)
+            {
+                ViewBag.Result4 = 4.0;
+                ViewBag.Alpha4 = "A";
+            }
+            else if (85 <= Society && Society <= 90)
+            {
+                ViewBag.Result4 = 3.5;
+                ViewBag.Alpha4 = "B+";
+            }
+            else if (80 <= Society && Society <= 85)
+            {
+                ViewBag.Result4 = 3.0;
+                ViewBag.Alpha4 = "B";
+            }
+            else if (75 <= Society && Society <= 80)
+            {
+                ViewBag.Result4 = 2.5;
+                ViewBag.Alpha4 = "C+";
+            }
+            else if (70 <= Society && Society <= 75)
+            {
+                ViewBag.Result4 = 2.0;
+                ViewBag.Alpha4 = "C";
+            }
+            else if (65 <= Society && Society <= 70)
+            {
+                ViewBag.Result4 = 1.5;
+                ViewBag.Alpha4 = "D+";
+            }
+            else if (Society <= 65)
+            {
+                ViewBag.Result4 = 1.0;
+                ViewBag.Alpha4 = "D";
+            }
+
+            if (95 <= History && History <= 100)
+            {
+                ViewBag.Result5 = 4.5;
+                ViewBag.Alpha = "A+";
+            }
+            else if (90 <= History && History <= 95)
+            {
+                ViewBag.Result5 = 4.0;
+                ViewBag.Alpha5 = "A";
+            }
+            else if (85 <= History && History <= 90)
+            {
+                ViewBag.Result5 = 3.5;
+                ViewBag.Alpha5 = "B+";
+            }
+            else if (80 <= History && History <= 85)
+            {
+                ViewBag.Result5 = 3.0;
+                ViewBag.Alpha5 = "B";
+            }
+            else if (75 <= History && History <= 80)
+            {
+                ViewBag.Result5 = 2.5;
+                ViewBag.Alpha5 = "C+";
+            }
+            else if (70 <= History && History <= 75)
+            {
+                ViewBag.Result5 = 2.0;
+                ViewBag.Alpha5 = "C";
+            }
+            else if (65 <= History && History <= 70)
+            {
+                ViewBag.Result5 = 1.5;
+                ViewBag.Alpha5= "D+";
+            }
+            else if (History <= 65)
+            {
+                ViewBag.Result5 = 1.0;
+                ViewBag.Alpha5 = "D";
+            }
+            ViewBag.Result = (ViewBag.Result1+ViewBag.Result2 + ViewBag.Result3 + ViewBag.Result4 + ViewBag.Result5)/ 5;
+            ViewBag.Score = (Language + Math + Science + Society + History)/5;
+            return View();
+        }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+    }
+}
+
+Subject
+namespace Score.Models
+{
+    public class Subject
+    {
+        public int Language { get; set; }    
+        public int Math { get; set; }
+        public int Science { get; set; }
+        public int Society { get; set; }
+        public int History { get; set; }
+
+
+    }
+}
+
+Index
+@model Score.Models.Subject
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">성적조회</h1>
+</div>
+
+<div>
+    <form method="podt" action="/Home/Result">
+        <label for ="Language">언어 :</label> <input asp-for="Language" class="form-control" placeholder="성적을 입력해주세요." value="" />
+        <br />
+        <label for="Math">수학 :</label> <input asp-for="Math" class="form-control" placeholder="성적을 입력해주세요." value="" />
+        <br />
+        <label for="Science">과학 :</label> <input asp-for="Science" class="form-control" placeholder="성적을 입력해주세요." value="" />
+        <br />
+        <label for="Society">사회 :</label> <input asp-for="Society" class="form-control" placeholder="성적을 입력해주세요." value="" />
+        <br />
+        <label for="History">역사 :</label> <input asp-for="History" class="form-control" placeholder="성적을 입력해주세요." value="" />
+        <br />
+        <input type = "submit" value="Submit" class= "btn-outline-primary" />
+    </form>
+</div>
+
+Result
+@{
+    ViewData["Title"] = "Result";
+}
+
+<h1>성적</h1>
+언어 : @ViewBag.Alpha1
+</br>
+수학 : @ViewBag.Alpha2
+</br>
+과학 : @ViewBag.Alpha3
+</br>
+사회 : @ViewBag.Alpha4
+</br>
+역사 : @ViewBag.Alpha5
+</br>
+<td></td>
+당신의 학점은 4.5 만점 기준 @ViewBag.Result
+<td></td>
+       평균 점수는 100점 만점 기준 @ViewBag.Score 입니다.
+
+
+
