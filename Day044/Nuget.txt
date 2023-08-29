@@ -1,0 +1,4 @@
+MSSQL ASP.net core needs 3 Packs
+1. Microsoft.EntityFramework.SqlServer 6.0.21
+2. Microsoft.EntityFramework.Tools
+3. Microsoft.EntityFramework.Design
