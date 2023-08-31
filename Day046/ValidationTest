@@ -1,0 +1,54 @@
+Students
+using System.ComponentModel.DataAnnotations;
+
+namespace ValidationTest.Models
+{
+    public class Student
+    {
+        //[Required]
+        [Display(Name="이름: ")]
+        [Required(ErrorMessage = "이름을 작성해주세요.")]
+        [StringLength(15, MinimumLength = 2, 
+            ErrorMessage = "이름은 2자이상 15자 이하 입니다.")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "나이를 작성해주세요.")]
+        [Range(20, 70, ErrorMessage = "20살 ~70살까지 작성할 수 있습니다.")]
+        public int? Age { get; set; }
+        [Required(ErrorMessage = "패스워드를 적어주세요.")]
+        [RegularExpression(@"(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$", ErrorMessage = "영문자로 대소문자와 숫자조합으로 8자리이상")]
+        public string Password { get; set; }
+    }
+}
+
+Index
+@model ValidationTest.Models.Student
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h1>Index Page</h1>
+<br/>
+<div>
+        <!------이름------>
+        <form method = "post" asp-controller = "Home" asp-action = "Index">
+        <label asp-for= "Name"></label> 
+        <input asp-for = "Name" placeholder="이름을 입력해주세요."/>
+        <span asp-validation-for="Name" style="color: red"></span>
+        <br >
+        <br />
+        <!------나이------>
+        <label asp-for="Age">나이 :</label>
+        <input asp-for="Age" placeholder="나이를 입력해주세요." />
+        <span asp-validation-for="Age" style="color: red"></span>
+        <br>
+        <br />
+        <!------패스워드------>
+        <label asp-for="Password">비밀번호 :</label>
+        <input asp-for="Password" placeholder="패스워드를 작성해주세요." />
+        <span asp-validation-for="Password" style="color:red"></span>
+        <br>
+        <br />
+        <!------버튼------>
+        <input type = "submit" value = "OK"/>
+    </form>
+</div>
