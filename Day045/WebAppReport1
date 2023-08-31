@@ -1,0 +1,156 @@
+libman.js
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "Chart.js@3.9.1",
+      "destination": "wwwroot/lib/Chart.js/"
+    }
+  ]
+}
+
+
+Chart.cs
+
+@{
+    ViewData["Title"] = "Chart";
+}
+
+<h1>Chart</h1>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+
+@* 차트를 그릴 영역으로 canvas태그를 사용한다. *@
+<canvas id="myChart" width="400" height="400"></canvas>
+
+@*  해당 부분은 JS파일을 따로 만들어서 사용해도 된다. *@
+<script>
+    // 차트를 그럴 영역을 dom요소로 가져온다.
+    var chartArea = document.getElementById('myChart').getContext('2d');
+    // 차트를 생성한다.
+    var myChart = new Chart(chartArea, {
+        // ①차트의 종류(String)
+        type: 'bar',
+        // ②차트의 데이터(Object)
+        data: {
+            // ③x축에 들어갈 이름들(Array)
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            // ④실제 차트에 표시할 데이터들(Array), dataset객체들을 담고 있다.
+            datasets: [{
+                // ⑤dataset의 이름(String)
+                label: '# of Votes',
+                // ⑥dataset값(Array)
+                data: [12, 19, 3, 5, 2, 3],
+                // ⑦dataset의 배경색(rgba값을 String으로 표현)
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                // ⑧dataset의 선 색(rgba값을 String으로 표현)
+                borderColor: 'rgba(255, 99, 132, 1)',
+                // ⑨dataset의 선 두께(Number)
+                borderWidth: 1
+            }]
+        },
+        // ⑩차트의 설정(Object)
+        options: {
+            // ⑪축에 관한 설정(Object)
+            scales: {
+                // ⑫y축에 대한 설정(Object)
+                y: {
+                    // ⑬시작을 0부터 하게끔 설정(최소값이 0보다 크더라도)(boolean)
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+Test1.cs
+
+@{
+    ViewData["Title"] = "Test";
+}
+
+<h1>Test</h1>
+<h2>Front-End 프로그래밍을 열심히 해봅시다.</h2>
+<h2 class= "item">ASP.NET Core를 공부하고 있습니다.</h2>
+<h2 id="temp">EntityFrameWork를 공부하고 있습니다.</h2>
+@*<script>
+    alert("Hello Front-End Programming")
+</script>
+*@
+<script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+	// $(document).ready(function () {
+	// 	$('*').css('color', 'blue')
+	// });
+</script>
+<script>
+    $(document).ready(function () {
+        $('h2').css('color', '#000000')
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('h2#temp').css('color', 'yellow')
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('h2.item').css('color', 'red')
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('tr:odd').css('background', 'white')
+        $('tr:even').css('background', '#CCCCCC')
+        $('tr:first').css('background', 'red').css('color', 'white')
+        $('tr:last').css('background', 'blue').css('color', 'white')
+    });
+</script>
+
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Hp</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>홍길동</td>
+        <td>20</td>
+        <td>010-1111-1111</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>이순신</td>
+        <td>40</td>
+        <td>010-2222-2222</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>강감찬</td>
+        <td>50</td>
+        <td>010-3333-3333</td>
+    </tr>
+    <tr>
+        <td>4</td>
+        <td>홍길동</td>
+        <td>20</td>
+        <td>010-1111-1111</td>
+    </tr>
+    <tr>
+        <td>5</td>
+        <td>이순신</td>
+        <td>40</td>
+        <td>010-2222-2222</td>
+    </tr>
+    <tr>
+        <td>6</td>
+        <td>강감찬</td>
+        <td>50</td>
+        <td>010-3333-3333</td>
+    </tr>
+</table>
+
+
