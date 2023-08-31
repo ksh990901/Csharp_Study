@@ -1,0 +1,32 @@
+Student
+using System.ComponentModel.DataAnnotations;
+
+namespace BasicCRUD02.Models
+{
+    public class Student
+    {
+        [Key]
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+        [Required]
+        public string Hp { get; set; }
+    }
+}
+
+StudentDbContext
+
+using Microsoft.EntityFrameworkCore;
+
+namespace BasicCRUD02.Models
+{
+    public class StudentDbContext :DbContext
+    {
+        public StudentDbContext(DbContextOptions options) : base(options) 
+        {
+        }
+        public DbSet<Student>Student{ get; set; }
+    }
+}
+
+
