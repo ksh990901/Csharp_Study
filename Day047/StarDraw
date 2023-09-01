@@ -1,0 +1,95 @@
+1단계 : 
+
+[index.cshtml]
+
+
+
+@{
+
+    ViewData["Title"] = "Index";
+
+}
+
+
+
+<h1>Index</h1>
+
+
+
+<form method="post" asp-controller="Home" asp-action="Result">
+
+    <label>별의 개수 : </label>
+
+    <input type="text" name="starCounter" />
+
+    <br />
+
+    <input type="submit" value="submit" />
+
+</form>
+
+
+
+
+
+[HomeController]
+
+ public IActionResult Index()
+
+ {
+
+     return View();
+
+ }
+
+
+
+ [HttpPost]
+
+ public IActionResult Result(int starCounter)
+
+ {
+
+     StringBuilder sb = new StringBuilder();
+
+     for (int i = 0; i < starCounter; i++)
+
+     {
+
+         for (int j = 0; j <= i; j++)
+
+         {
+
+             sb.Append("*");
+
+         }
+
+         sb.Append("<br/>");
+
+     }
+
+     return View("Result", sb.ToString());
+
+ }
+
+
+
+[Result.cshtml]
+
+@model string
+
+
+
+@{
+
+    ViewData["Title"] = "Result";
+
+}
+
+
+
+<h1>Result</h1>
+
+
+
+<div>@Html.Raw(Model)</div>
