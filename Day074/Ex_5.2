@@ -1,0 +1,16 @@
+namespace Ex_5._2
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Mat src = Cv2.ImRead("C:\\Temp\\image\\crow.jpg");
+            Mat dst = new Mat(src.Size(), MatType.CV_8UC1);
+            Cv2.CvtColor(src, dst, ColorConversionCodes.BGR2HSV);
+
+            Cv2.ImShow("dst", dst);
+            Cv2.WaitKey(0);
+            Cv2.DestroyAllWindows();
+        }
+    }
+}
