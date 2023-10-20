@@ -1,0 +1,49 @@
+namespace WinForm_FlipApp
+{
+    public partial class Form1 : Form
+    {
+        Mat image = new Mat("C:\\Temp\\img\\turtleShip.jpg", ImreadModes.Color);
+        Mat dst = new Mat();
+        Bitmap bitmapimage = null;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        private void printImage(Mat image)
+        {
+            bitmapimage = BitmapConverter.ToBitmap(image);
+            dstPicBox.Image = bitmapimage;
+        }
+        private void imgBtn_Click(object sender, EventArgs e)
+        {
+            printImage(image);
+        }
+        private void xFlipBtn_Click(object sender, EventArgs e)
+        {
+            Cv2.Flip(image, dst, FlipMode.X);
+            printImage(dst);
+        }
+        private void yFlipBtn_Click(object sender, EventArgs e)
+
+        {
+            Cv2.Flip(image, dst, FlipMode.Y);
+            printImage(dst);
+        }
+        private void xyFlipBtn_Click(object sender, EventArgs e)
+        {
+            Cv2.Flip(image, dst, FlipMode.XY);
+            printImage(dst);
+        }
+        private void RepBtn_Click(object sender, EventArgs e)
+        {
+            Cv2.Repeat(image, 1, 2, dst);
+            printImage(dst);
+        }
+        private void TransBtn_Click(object sender, EventArgs e)
+
+        {
+            Cv2.Transpose(image, dst);
+            printImage(dst);
+        }
+    }
+}
