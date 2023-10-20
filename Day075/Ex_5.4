@@ -1,0 +1,28 @@
+namespace Ex_5._4
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Mat src = Cv2.ImRead("C:\\Temp\\image\\tomato.jpg");
+            Mat hsv = new Mat(src.Size(), MatType.CV_8UC3);
+            Mat dst = new Mat(src.Size(), MatType.CV_8SC3);
+
+            //BGR --> HSV
+            Cv2.CvtColor(src, hsv, ColorConversionCodes.BGR2HSV);
+            //HSV 각각 채널을 분리
+            //Hue(색상) : 빨강, 파랑, 녹색과 같이 서로 구별되는 색 고유의 특성
+            //Ssturation(채도) : 색상의 깊이로 얼마나 순수한 색상이냐를 구분
+            //Value(명도) : 밝고 어두운 정도인데 명도가 높을수록 인식률이 좋다.
+            Mat[] HSV = Cv2.Split(hsv);
+            Mat H_Orange = new Mat(src.Size(), MatType.CV_8UC1);
+            Cv2.InRange(HSV[0], new Scalar(8), new Scalar(20), H_Orange);
+
+            Cv2.BitwiseAnd((hsv, hsv, dst, H_Orange);
+            Cv2.CvtColor(dst, dst, ColorConversionCodes.HSV2BGR);
+
+            Cv2.ImShow("Orange", dst);
+            Cv2.WaitKey();
+        }
+    }
+}
