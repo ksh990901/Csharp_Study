@@ -1,0 +1,71 @@
+namespace sharpening
+{
+    internal class Program
+    {
+        static void Filter(Mat img, out Mat dst, Mat mask)
+        {
+            dst = new Mat(img.Size(), MatType.CV_32F, Scalar.All(0));
+            // Point h_m = mask.Size() / 2;
+            Point h_m = new Point(mask.Width / 2, mask.Height / 2);
+
+            for (int i = h_m.Y; i < img.Rows - h_m.Y; i++)
+            {
+                for (int j = h_m.X; j < img.Cols - h_m.X; j++)
+                {
+                    float sum = 0;
+
+                    for (int u = 0; u < mask.Rows; u++)
+                    {
+                        for (int v = 0; v < mask.Cols; v++)
+                        {
+                            int y = i + u - h_m.Y;
+                            int x = j + v - h_m.X;
+                            sum += mask.At<float>(u, v) * img.At<byte>(y, x);
+                        }
+                    }
+
+                    dst.Set<float>(i, j, sum);
+                }
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            string path = "C:\\Temp\\image\\newjeans.png";
+            Mat src = Cv2.ImRead(path, ImreadModes.Grayscale);
+
+            if (src.Empty())
+                throw new Exception("이미지 로드가 실패하였습니다.");
+
+            float[] data1 =
+            {
+               0, -1, 0,
+               0, 5, -1,
+               0, -1, 0,
+            };
+            float[] data2 =
+            {
+               -1, -1, -1,
+               -1, 9, -1,
+               -1, -1, -1,
+            };
+
+            Mat mask1 = new Mat(3, 3, MatType.CV_32F, data1);
+            Mat mask2 = new Mat(3, 3, MatType.CV_32F, data2);
+
+            Mat sharpen1 = new Mat();
+            Mat sharpen2 = new Mat();
+
+            Filter(src, out sharpen1 ,mask1);
+            Filter(src, out sharpen2, mask2);
+            sharpen1.ConvertTo(sharpen1, MatType.CV_8U);
+            sharpen2.ConvertTo(sharpen2, MatType.CV_8U);
+
+            Cv2.ImShow("image", src);
+            Cv2.ImShow("sharpen1", sharpen1);
+            Cv2.ImShow("sharpen2", sharpen2);
+            Cv2.WaitKey();
+           
+        }
+    }
+}
