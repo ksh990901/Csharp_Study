@@ -1,0 +1,87 @@
+namespace Histogram11._2._1
+{
+    internal class Program
+    {
+        static void calc_Histo(Mat img, Mat hist, Vec3i bins, Vec3f range, int _dims)
+        {
+            int dims = (_dims <= 0) ? img.Channels() : _dims;
+            int[] channels = { 0, 1, 2 };
+            int[] histSize = { bins.Item0, bins.Item1, bins.Item2 };
+
+            float[] range1 = { 0, range.Item0 };
+            float[] range2 = { 0, range.Item1 };
+            float[] range3 = { 0, range.Item2 };
+            float[][] ranges = { range1, range2, range3 };
+
+            //Rangef[] ranges = new Rangef[3];
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    ranges[i] = new Rangef(rangesArray[i][0], rangesArray[i][1]);
+            //}
+
+            Cv2.CalcHist(new Mat[] { img }, channels, new Mat(), hist, dims,  histSize, ranges);
+            Cv2.Normalize(hist, hist, 0, 1, NormTypes.MinMax);
+        }
+
+        static Mat Draw_Histo(Mat hist)
+        {
+            if(hist.Dims != 2)
+            {
+                Console.WriteLine("히스토그램이 2차원 데이토가 아닙니다.");
+                Environment.Exit(0);
+            }
+            float ratio_value = 512f;
+            float ratio_hue = 180f / hist.Rows;
+            float ratio_sat = 256f / hist.Cols;
+
+            Mat graph = new Mat(new Size(hist.Cols, hist.Rows), MatType.CV_32FC3);
+
+            for (int i = 0; i < hist.Rows; i++)
+            {
+                for (int j = 0; j < hist.Cols; j++)
+                {
+                    float value = hist.Get<float>(i, j) * ratio_value;
+                    float hue = i * ratio_hue;
+                    float sat = i * ratio_sat;
+                    graph.At<Vec3f>(i, j) = new Vec3f((byte)hue, (byte)sat, (byte)value);
+                }
+            }
+            graph.ConvertTo(graph, MatType.CV_8U);
+            Cv2.CvtColor(graph, graph, ColorConversionCodes.HSV2BGR);
+            
+
+            return graph;
+        }
+        static void Main(string[] args)
+        {
+           Vec3i bins = new Vec3i(30, 42, 0);
+           Vec3f ranges = new Vec3f(180, 256, 0);
+
+            int q_no = 66;
+            String frame = string.Format("C:\\Temp\\image\\DB\\img_71.jpg", q_no);
+            Mat image = Cv2.ImRead(frame, ImreadModes.Color);
+
+            if (image.Empty())
+            {
+                Console.WriteLine("이미지를 로드할 수 없습니다.");
+                return;
+            }
+
+            Mat hsv = new Mat();
+            Mat hist = new Mat();
+
+            Cv2.CvtColor(image, hsv, ColorConversionCodes.BGR2HSV);
+            calc_Histo(hsv, hist, bins, ranges, 2);
+
+            Mat hist_img = Draw_Histo(hist);
+
+            Cv2.ImShow("image", image);
+            Mat resizeHistimg = new Mat();
+            Size newsize = new Size(hist_img.Width * 20, hist_img.Height * 20);
+            Cv2.Resize(hist_img, resizeHistimg, newsize);
+            Cv2.ImShow("resizedHistimg", resizeHistimg);
+            Cv2.WaitKey();
+            Cv2.DestroyAllWindows();
+        }
+    }
+}
