@@ -1,0 +1,102 @@
+using OpenCvSharp;
+using OpenCvSharp.Internal.Util;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Scaling_Bilinear
+{
+    internal class Program
+    {
+        // 최근접 이웃 보간 함수 - 역방향 사상
+        static void scaling_nearest(Mat img, Mat dst, Size size)
+        {
+            dst.Create(size, MatType.CV_8U); // 목적영상 생성
+            dst.SetTo(0);
+
+            double ratioY = (double)size.Height / img.Rows;  // 세로 변경 비율 
+            double ratioX = (double)size.Width / img.Cols;  // 가로 변경 비율 
+
+            for (int i = 0; i < dst.Rows; i++)
+            {
+                for (int j = 0; j < dst.Cols; j++)
+                {
+                    int x = (int)Math.Round(j / ratioX);
+                    int y = (int)Math.Round(i / ratioY);
+                    dst.At<byte>(i, j) = img.At<byte>(y, x);
+                }
+            }
+        }
+        static byte Bilinear_value(Mat img, double x, double y) // 단일 화소 양선형 보간
+        {
+            if (x >= img.Cols - 1) x--;
+            if (y >= img.Rows - 1) y--;
+
+            //4개 화소 가져옴
+
+            Point pt = new Point((int)x, (int)y);
+            int A = img.At<byte>(pt.Y, pt.X);  // 왼쪽 상단 화소
+            int B = img.At<byte>(pt.Y + 1, pt.X); // 왼쪽 하단 화소
+            int C = img.At<byte>(pt.Y, pt.X + 1); // 오른쪽 상단 화소
+            int D = img.At<byte>(pt.Y + 1, pt.X + 1); // 오른쪽 하단 화소
+
+            double alpha = y - pt.Y;
+            double beta = x - pt.X;
+
+            int M1 = A + (int)Math.Round(alpha * (B - A));
+            int M2 = C + (int)Math.Round(alpha * (D - C));
+            int P = M1 + (int)Math.Round(beta * (M2 - M1));
+
+            return (byte)Math.Min(Math.Max(P, 0), 255);
+
+
+        }
+        static void scaling_bilinear(Mat img, Mat dst, Size size)
+        {
+            dst.Create(size, img.Type()); // 목적영상 생성
+            dst.SetTo(0);
+
+            double ratioY = (double)size.Height / img.Rows;  // 세로 변경 비율 
+            double ratioX = (double)size.Width / img.Cols;  // 가로 변경 비율
+            
+            for(int i = 0; i < dst.Rows; i++) //  목적영상 순회 - 역방향 사상
+            {
+                for(int j = 0; j < dst.Cols; j++)
+                {
+                    double y = i / ratioY;
+                    double x = j / ratioX;
+                    dst.At<byte>(i, j) = Bilinear_value(img, x, y); // 화소 양선형 보간
+                }
+            }
+        }
+        static void Main(string[] args)
+        {
+            Mat image = Cv2.ImRead("C:\\Temp\\image\\interpolation_test.jpg", ImreadModes.Grayscale); // 명암도 영상 로드
+            if (image.Empty())
+            {
+                throw new Exception("이미지의 경로를 확인하세요.");
+            }
+
+            Mat dst1 = new Mat();
+            Mat dst2 = new Mat();
+            Mat dst3 = new Mat();
+            Mat dst4 = new Mat();
+
+            scaling_bilinear(image, dst1, new Size(300, 300)); // 크기변경 - 양선형 보간
+            scaling_nearest(image, dst2, new Size(300, 300)); // 크기변경 - 최근접 보간
+            Cv2.Resize(image, dst3, new Size(300, 300), 0, 0, interpolation: InterpolationFlags.Linear); // OpenCv 함수 적용
+            Cv2.Resize(image, dst4, new Size(300, 300), 0, 0, interpolation: InterpolationFlags.Nearest);
+
+            Cv2.ImShow("image", image);
+            Cv2.ImShow("dst1-양선형", dst1);
+            Cv2.ImShow("dst2-최근접 이웃", dst2);
+            Cv2.ImShow("OpenCV-양선형", dst3);
+            Cv2.ImShow("OpenCV-최근접 이웃", dst4);
+
+            Cv2.WaitKey(); 
+
+        }
+    }
+}
