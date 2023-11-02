@@ -1,0 +1,55 @@
+using OpenCvSharp;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Scaling
+{
+    internal class Program
+    {
+        static void scaling(Mat img, Mat dst, Size size)
+        {
+            dst.Create(size, img.Type()); // 목적영상 생성
+            dst.SetTo(0);
+
+            double ratioY = (double)size.Height / img.Rows;  // 세로 변경 비율 
+            double ratioX = (double)size.Width / img.Cols;  // 가로 변경 비율 
+
+            for (int i = 0; i < img.Rows; i++)
+            {
+                for(int j  = 0; j < img.Cols; j++)
+                {
+                    int x = (int)(j * ratioX);
+                    int y = (int)(i * ratioY);
+                    dst.At<byte>(y, x) = img.At<byte>(i, j);
+                }
+            }
+        }
+
+
+        static void Main(string[] args)
+        {
+            Mat image = Cv2.ImRead("C:\\Temp\\image\\scaling_test.jpg", ImreadModes.Grayscale);
+
+            if (image.Empty())
+            {
+                throw new Exception("이미지의 경로를 확인하세요.");
+            }
+
+            Mat dst1 = new Mat();
+            scaling(image, dst1, new Size(150, 200));  // 크기변경 수행 - 축소
+
+            Mat dst2 = new Mat();
+            scaling(image, dst2, new Size(300, 400));  // 크기변경 수행 - 확대
+
+            Cv2.ImShow("image", image);
+            Cv2.ImShow("dst1-축소", dst1);
+            Cv2.ImShow("dst2-축소", dst2);
+            Cv2.ResizeWindow("dst1-축소", 200, 200);  // 윈도우 크기 확장
+            Cv2.WaitKey(0);
+        }
+    }
+}
