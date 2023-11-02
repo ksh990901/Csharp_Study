@@ -1,0 +1,53 @@
+using OpenCvSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.NetworkInformation;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Translation
+{
+    internal class Program
+    {
+        // 평행 이동 함수
+        static void translation(Mat img, Mat dst, Point pt)
+        {
+            Rect rect = new Rect(new Point(0, 0), img.Size());
+            img.CopyTo(dst);
+
+            for(int i = 0; i < dst.Rows;  i++)
+            {
+                for(int j = 0; j < dst.Cols; j++)
+                {
+                    Point dst_pt = new Point(j , i);  //목적영상 좌표
+                    Point img_pt = dst_pt - pt; // 입력영상 좌표
+
+                    if (rect.Contains(img_pt)) // 입력영상 범위 확인
+                        dst.At<byte>(i, j) = img.At<byte>(img_pt.Y, img_pt.X);
+                    else
+                        dst.At<byte>(i, j) = 0;
+                }   
+            }
+        }
+        static void Main(string[] args)
+        {
+            Mat image = Cv2.ImRead("C:\\Temp\\image\\translation_test.jpg", ImreadModes.Grayscale);
+            if (image.Empty())
+            {
+                throw new Exception("이미지를 로드 할 수 없습니다.");
+            }
+
+            Mat dst1 = new Mat();
+            translation(image, dst1,  new Point(30, 80));
+
+            Mat dst2 = new Mat();
+            translation(image, dst2, new Point(-80, -50));
+
+            Cv2.ImShow("image", image);
+            Cv2.ImShow("dst1 - ( 30, 80) 이동", dst1);
+            Cv2.ImShow("dst2 - (-80, -50) 이동", dst2);
+            Cv2.WaitKey();
+        }
+    }
+}
