@@ -1,0 +1,84 @@
+using OpenCvSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DilationApp
+{
+    internal class Program
+    {
+        static bool check_match(Mat img, Point start, Mat mask, int mode)
+        {
+            for (int u = 0; u < mask.Rows; u++)
+            {
+                for (int v = 0; v < mask.Cols; v++)
+                {
+                    int m = mask.At<byte>(u, v); // 마스크 계수
+                    int p = img.At<byte>(start.Y + u, start.X + v); // 해당 위치 입력화소
+
+                    bool ch = (p == 255); // 일치 여부 비교
+                    if (m == 1 && ch == (mode == 1)) return false;
+                }
+            }
+            return true;
+        }
+
+        // 팽창 연산을 수행하는 함수
+        static void dilation(Mat img, Mat dst, Mat mask)
+        {
+            // 결과 이미지 초기화
+            dst.SetTo(0);
+            //dst = new Mat(img.Size(), MatType.CV_8U);
+            // 마스크가 제공되지 않았다면 기본 3x3 마스크 생성
+            if (mask.Empty())
+            {
+                mask = new Mat(3, 3, MatType.CV_8UC1);
+            }
+            // 마스크의 중심 좌표 계산
+            Point h_m = new Point(mask.Cols / 2, mask.Rows / 2);
+
+            // 이미지 순회
+            for (int i = h_m.Y; i < img.Rows - h_m.Y; i++)
+            {
+                for(int j = h_m.X; j < img.Cols - h_m.X; j++)
+                {
+                    // 현재 픽셀을 중심으로 마스크를 적용할 시작 좌표 계산
+                    Point start = new Point(j, j) - h_m;
+
+                    // 이미지의 해당 부분과 마스크가 일치하는지 확인
+                    bool check = check_match(img, start, mask, 1);
+
+                    // 팽창 연산 수행
+                    dst.Set<byte>(i, j, check ? (byte)0 : (byte)255);
+                }
+            }
+        }
+        static void Main(string[] args)
+        {
+            Mat image = Cv2.ImRead("C:\\Temp\\image\\histo_test.jpg", ImreadModes.Grayscale);
+            if (image.Empty())
+            {
+                throw new Exception("이미지의 경로를 확인하세요.");
+            }
+            Mat th_img = new Mat();
+            Cv2.Threshold(image, th_img, 128, 255, ThresholdTypes.Binary);
+
+            var mask = new Mat(3, 3, MatType.CV_8UC1, new byte[] { 0, 1, 0, 1, 1, 1, 0, 1, 1 });
+
+
+            Mat dst1 = image.Clone();
+            dilation(th_img, dst1, mask);
+
+            Mat dst2 = new Mat();
+            Cv2.MorphologyEx(th_img, dst2, MorphTypes.Dilate, mask);
+
+            Cv2.ImShow("image", image);
+            Cv2.ImShow("팽창 사용자정의 함수", dst1);
+            Cv2.ImShow("OpenCV 팽창 함수", dst2);
+
+            Cv2.WaitKey();
+        }
+    }
+}
