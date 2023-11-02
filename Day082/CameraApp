@@ -1,0 +1,330 @@
+using DlibDotNet;
+using DlibDotNet.Extensions;
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace CameraApp
+{
+    public partial class Form1 : Form
+    {
+        private VideoCapture capture; // 카메라 캡처 객체
+        private Mat frame; // 현재 프레임을 저장할 객체
+        private Mat cannyImage;      // 캐니 필터
+        private bool isRunning = false; //카메라가 실행 중인지 확인하는 변수
+        private bool isColor = true; // 컬러 모드 인지 확인하는 변수
+        private bool isCanny = false;
+        private bool isSharpeningEnabled = false;
+        private bool isMosaicEnabled = false;
+        private bool isblurredFrameEnabled = false;
+        private bool isFunhouseMirrorEnabled = false;
+        private Rect mosaicRegion = new Rect(0, 0, 456, 391); // 모자이크 처리할 영역 좌표와 크기
+      
+
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            capture = new VideoCapture(0);
+            frame = new Mat();
+            cannyImage = new Mat();
+            capture.Set(VideoCaptureProperties.FrameWidth, 640); // 프레임 너비 설정
+            capture.Set(VideoCaptureProperties.FrameHeight, 480); // 프레임 높이 설정
+           
+        }
+
+      
+        private async void button11_Click(object sender, EventArgs e) // 시작
+        {
+            if (isRunning)
+            {
+                isRunning = false; // 실행 중 상태를 false로 변경
+                button11.Text = "Start"; // 버튼 텍스트 변경
+                return;
+            }
+            else
+            {
+                button11.Text = "Stop"; // 버튼 텍스트 변경
+                isRunning = true; // 실행 중 상태를 true로 변경
+
+                await Task.Run(() => VideoProcessingLoop());
+            }
+            while (isRunning)
+            {
+                if (capture.IsOpened()) // 카메라가 연결되어 있으면
+                {
+                    capture.Read(frame); // 프레임 읽기
+
+                    if (!isColor)
+                    {
+                        Cv2.CvtColor(frame, frame, ColorConversionCodes.BGR2GRAY); // 컬러를 흑백으로 변경
+                        Cv2.CvtColor(frame, frame, ColorConversionCodes.GRAY2BGR); // 흑백을 다시 컬러로 변경 (PictureBox 호환을 위해)
+                    }
+                    pictureBox1.Image = BitmapConverter.ToBitmap(frame); // PictureBox에 영상 출력
+                }
+                await Task.Delay(33); // 대략 30 fps
+            }
+        }
+        private async void VideoProcessingLoop()
+        {
+            while (isRunning)
+            {
+                if (isCanny)
+                {
+                    ApplyCannyEdgeDetection(); // 캐니 엣지 검출을 먼저 수행
+                }
+                else if (isSharpeningEnabled)
+                {
+                    ApplySharpeningEffect();
+                }
+                else if (isMosaicEnabled)
+                {
+                    ApplyMosaicEffect();
+                }
+                else if (isblurredFrameEnabled)
+                {
+                    ApplyBlurredFrame();
+                }
+                else if (isFunhouseMirrorEnabled)
+                {
+                    MirrorFrame();
+                }
+                else
+                {
+                    ProcessFrame();
+                }
+
+              
+                await Task.Delay(33); // 대략 30 FPS
+            }
+        }
+        private void ProcessFrame()
+        {
+            if (capture.IsOpened())
+            {
+                capture.Read(frame);
+            }
+        }
+        private void ApplyCannyEdgeDetection()
+        {
+            if (frame != null)
+            {
+                Mat grayImage = new Mat();
+                Cv2.CvtColor(frame, grayImage, ColorConversionCodes.BGR2GRAY);
+                Cv2.Canny(grayImage, cannyImage, 100, 200);
+                Mat cannyBGR = new Mat();
+                Cv2.CvtColor(cannyImage, cannyBGR, ColorConversionCodes.GRAY2BGR);
+
+              
+                // 현재 이미지 해제
+             
+                pictureBox1.Image = BitmapConverter.ToBitmap(cannyBGR);
+            }
+        }
+        private void ApplySharpeningEffect()
+        {
+            if (frame != null )
+            {
+                Mat sharpenedFrame = new Mat();
+                Mat kernel = new Mat(3, 3, MatType.CV_32F, new float[]
+                {
+            -1, -1, -1,
+            -1, 9, -1,
+            -1, -1, -1
+                });
+
+                Cv2.Filter2D(frame, sharpenedFrame, -1, kernel);
+               
+                pictureBox1.Image = BitmapConverter.ToBitmap(sharpenedFrame);
+            }
+        }
+        private void ApplyMosaicEffect()
+        {
+            if (frame != null)
+            {
+                Mat mosaicFrame = frame.Clone();
+
+                if (isMosaicEnabled)
+                {
+                    // 모자이크 처리할 영역을 선택하고 축소
+                    Mat mosaicRegionMat = frame.SubMat(new Rect(0, 0, 456, 391));
+                    Cv2.Resize(mosaicRegionMat, mosaicRegionMat, new OpenCvSharp.Size(10, 10)); // 축소할 크기 조절
+
+                    // 축소한 영역을 확대하여 원래 크기로 복원
+                    mosaicRegionMat = mosaicRegionMat.Clone();
+                    Cv2.Resize(mosaicRegionMat, mosaicRegionMat, new OpenCvSharp.Size(mosaicRegion.Width, mosaicRegion.Height));
+
+                    // 원본 프레임에 모자이크 처리된 영역 복사
+                    mosaicRegionMat.CopyTo(mosaicFrame[mosaicRegion]);
+
+                    // 모자이크 처리된 프레임을 pictureBox에 표시
+                    pictureBox1.Image = BitmapConverter.ToBitmap(mosaicFrame);
+                }
+                else
+                {
+                    // 모자이크 비활성화일 경우 원본 프레임을 표시
+                    pictureBox1.Image = BitmapConverter.ToBitmap(frame);
+                }
+            }
+        }
+        private void ApplyHistogramEqualization()
+        {
+            if (frame != null)
+            {
+                Mat equalizedFrame = new Mat();
+                Mat grayFrame = new Mat();
+
+                if (isColor)
+                {
+                    Cv2.CvtColor(frame, grayFrame, ColorConversionCodes.BGR2GRAY);
+                }
+                else
+                {
+                    grayFrame = frame;
+                }
+
+                Cv2.EqualizeHist(grayFrame, equalizedFrame);
+
+                if (isColor)
+                {
+                    Mat colorFrame = new Mat();
+                    Cv2.CvtColor(equalizedFrame, colorFrame, ColorConversionCodes.GRAY2BGR);
+                    pictureBox1.Image = BitmapConverter.ToBitmap(colorFrame);
+                }
+                else
+                {
+                    pictureBox1.Image = BitmapConverter.ToBitmap(equalizedFrame);
+                }
+            }
+        }
+        private void ApplyBlurredFrame()
+        {
+            if (frame != null)
+            {
+                Mat blurredFrame = new Mat();
+                if (isblurredFrameEnabled )
+                {
+                    // 블러 효과를 적용
+                    Cv2.GaussianBlur(frame, blurredFrame, new OpenCvSharp.Size(15, 15), 0); // 가우시안 블러
+                }
+
+
+                pictureBox1.Image = BitmapConverter.ToBitmap(blurredFrame);
+            }
+        }
+        private void MirrorFrame()
+        {
+            if (frame != null)
+            {
+                Mat funhouseMirrorFrame = frame.Clone();
+                int width = frame.Cols;
+                int height = frame.Rows;
+                int centerX = width / 2;
+                int centerY = height / 2;
+                double distortionIntensity = 1.5;
+                double distortionDirection = 1.0;
+
+                for (int y = 0; y < height; y++)
+                {
+                    for (int x = 0; x < width; x++)
+                    {
+                        // 왜곡 효과 계산
+                        double dx = x - centerX;
+                        double dy = y - centerY;
+                        double radius = Math.Sqrt(dx * dx + dy * dy);
+                        double angle = Math.Atan2(dy, dx);
+                        double distortion = distortionIntensity * Math.Sin(radius / distortionDirection);
+                        int newX = (int)(x + distortion * Math.Cos(angle));
+                        int newY = (int)(y + distortion * Math.Sin(angle));
+
+                        if (newX >= 0 && newX < width && newY >= 0 && newY < height)
+                        {
+                            Vec3b pixel = frame.Get<Vec3b>(newY, newX);
+                            funhouseMirrorFrame.Set(y, x, pixel);
+                        }
+                    }
+                }
+
+                // UI 갱신을 UI 스레드에서 실행
+                BeginInvoke(new Action(() =>
+                {
+                    pictureBox1.Image = BitmapConverter.ToBitmap(funhouseMirrorFrame);
+                }));
+            }
+        }
+
+    
+        private void button12_Click(object sender, EventArgs e) // 종료
+        {
+            isRunning = false; // 카메라 중지
+            capture.Release(); // 카메라 자원 해제
+            this.Close(); // 프로그램 종료
+        }
+
+        private void button9_Click(object sender, EventArgs e)  // 흑백
+        {
+            isColor = false; //흑백 모드로 변경
+        }
+
+        private void button10_Click(object sender, EventArgs e) // 컬러
+        {
+            isColor = true; //컬러 모드로 변경
+        }
+
+        private void button1_Click(object sender, EventArgs e) //오목거울
+        {
+          isFunhouseMirrorEnabled = !isFunhouseMirrorEnabled;
+        }
+
+        private void button5_Click(object sender, EventArgs e) //입술제거
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e) //모자이크 블러 효과
+        {
+            isMosaicEnabled = !isMosaicEnabled; // 모자이크 활성화/비활성화를 토글합니다.
+        }
+
+        private void button6_Click(object sender, EventArgs e) //  샤프닝효과
+        {
+            isSharpeningEnabled = !isSharpeningEnabled;
+        }
+
+        private void button3_Click(object sender, EventArgs e) //히스토그램 평활화
+        {
+            ApplyHistogramEqualization();
+        }
+      
+      
+        private void button7_Click(object sender, EventArgs e) // 캐니에지
+        {
+            isCanny = !isCanny; // 캐니 엣지 검출 활성화/비활성화를 토글합니다.
+        }
+      
+        private void button4_Click(object sender, EventArgs e) // 얼굴인식
+        {
+           
+        }
+
+        private void button8_Click(object sender, EventArgs e) // 블러
+        {
+            isblurredFrameEnabled = !isblurredFrameEnabled; 
+        }
+    }
+}
