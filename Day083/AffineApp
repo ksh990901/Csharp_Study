@@ -1,0 +1,107 @@
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AffineApp
+{
+    internal class Program
+    {
+        static byte Bilinear_value(Mat img, double x, double y) // 단일 화소 양선형 보간
+        {
+            if (x >= img.Cols - 1) x--;
+            if (y >= img.Rows - 1) y--;
+
+            //4개 화소 가져옴
+            // 주어진 좌표의 정수 부분을 기준으로 4개의 주변 픽셀 위치를 계산합니다.
+            Point pt = new Point((int)x, (int)y);
+            int A = img.At<byte>(pt.Y, pt.X);  // 왼쪽 상단 화소
+            int B = img.At<byte>(pt.Y + 1, pt.X); // 왼쪽 하단 화소
+            int C = img.At<byte>(pt.Y, pt.X + 1); // 오른쪽 상단 화소
+            int D = img.At<byte>(pt.Y + 1, pt.X + 1); // 오른쪽 하단 화소
+
+            // 1차 보간
+            double alpha = y - pt.Y;
+            double beta = x - pt.X;
+
+            // 양선형 보간을 사용하여 결과 픽셀 값을 계산합니다.
+            int P = A + (int)Math.Round(alpha * (B - A) + beta * (C - A + alpha * (D - B - C + A)));
+
+            return (byte)P;
+        }
+        // 어파인 변환 함수
+        static void affine_transform(Mat img, Mat dst, Mat map, Size size)
+        {
+            Rect rect = new Rect(new Point(0, 0), img.Size());
+
+            Mat inv_map = new Mat();
+            Cv2.InvertAffineTransform(map, inv_map);
+
+            for(int i = 0; i < dst.Rows; i++)
+            {
+                for(int j = 0; j < dst.Cols; j++)
+                {
+                    // 현재 픽셀의 위치를 3차원 포인트로 표현합니다. (옴니젠트 좌표 사용)
+                    Point3d ji = new Point3d(j, i, 1);
+
+                    Mat xy = inv_map * new Mat(3, 1, MatType.CV_64FC1, new double[] { ji.X, ji.Y, ji.Z });
+                    Point2d pt = new Point2d(xy.At<double>(0), xy.At<double>(1));
+
+                    // 계산된 원본 이미지의 픽셀 위치가 유효한 범위 내에 있는지 확인합니다.
+                    if (rect.Contains(pt.ToPoint()))
+                        // 유효하면 양선형 보간을 통해 픽셀 값을 얻고 결과 이미지에 설정합니다.
+                        dst.At<byte>(i, j) = Bilinear_value(img, pt.X, pt.Y);
+                }
+            }
+        }
+        static void Main(string[] args)
+        {
+            Mat image = Cv2.ImRead("C:\\Temp\\image\\affine_test3.jpg", ImreadModes.Grayscale);
+            if (image.Empty())
+            {
+                throw new Exception("이미지를 로드 할 수 없습니다.");
+            }
+
+            Point2f[] pt1 = { new Point2f(10, 200), new Point(200, 150), new Point2f(280, 280) };
+            Point2f[] pt2 = { new Point2f(10, 10), new Point(250, 10), new Point2f(280, 280) };
+
+            Point center = new Point(200, 100); // 회전 반환 기준 좌표
+            double angle = 30.0; // 회전 각도
+            double scale = 1; //크기 변경 안함
+
+            Mat aff_map = Cv2.GetAffineTransform(pt1, pt2); // 3개 좌표쌍으로 어파인 행렬
+            Mat rot_map = Cv2.GetRotationMatrix2D(center, angle, scale); // 회전 변환 어파인 행렬
+
+            Mat dst1 = new Mat(image.Size(), MatType.CV_8UC1);
+            Mat dst2 = new Mat(image.Size(), MatType.CV_8UC1);   
+            Mat dst3 = new Mat(image.Size(), MatType.CV_8UC1);
+            Mat dst4 = new Mat(image.Size(), MatType.CV_8UC1);
+
+            affine_transform(image, dst1, aff_map ,image.Size()); // 어파인 변환 수행
+            affine_transform (image, dst2, rot_map, image.Size()); // 회전 변환 수행
+
+            Cv2.WarpAffine(image, dst3, aff_map, image.Size(), InterpolationFlags.Linear);
+            Cv2.WarpAffine(image, dst4, rot_map, image.Size(), InterpolationFlags.Linear);
+
+            Cv2.CvtColor(image, image, ColorConversionCodes.GRAY2BGR);
+            Cv2.CvtColor(dst1, dst1, ColorConversionCodes.GRAY2BGR);
+            for(int i = 0; i < 3;  i++)
+            {
+                Cv2.Circle(image, (Point)pt1[i], 3, new Scalar(0, 0, 255), 2);
+                Cv2.Circle(dst1, (Point)pt2[i], 3, new Scalar(0, 0, 255), 2);
+            }
+
+            Cv2.ImShow("image", image);
+            Cv2.ImShow("dst1-어파인", dst1);
+            Cv2.ImShow("dst2-어파인 회전", dst2);
+            Cv2.ImShow("dst3-어파인_OpenCV", dst3);
+            Cv2.ImShow("dst4-어파인-회전_OpenCV", dst4);
+
+            Cv2.WaitKey();
+
+        }
+    }
+}
