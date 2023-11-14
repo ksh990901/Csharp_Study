@@ -1,0 +1,119 @@
+using OpenCvSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CoinCoin
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Mat src = Cv2.ImRead("C:\\Temp\\image\\image\\7.png");
+
+            if (src.Empty())
+            {
+                Console.WriteLine("이미지 로드 실패!");
+                Environment.Exit(0);
+            }
+
+            Mat gray = new Mat();
+            Cv2.CvtColor(src, gray, ColorConversionCodes.BGR2GRAY);
+
+           
+            Mat blr = new Mat();
+            Cv2.GaussianBlur(gray, blr, new Size(0, 0), 1);
+
+          
+            CircleSegment[] circles = Cv2.HoughCircles(
+                blr,
+                HoughModes.Gradient,
+                1,
+                50,
+                param1: 150,
+                param2: 40,
+                minRadius: 20,
+                maxRadius: 80
+            );
+
+            int sumOfMoney = 0;
+
+            Mat dst = src.Clone();
+
+            if (circles != null)
+            {
+                foreach (var circle in circles)
+                {
+                    int cx = (int)circle.Center.X;
+                    int cy = (int)circle.Center.Y;
+                    int radius = (int)circle.Radius;
+
+                   
+                    Cv2.Circle(dst, new Point(cx, cy), radius, new Scalar(0, 0, 255), 2, LineTypes.AntiAlias);
+
+                  
+                    int estimatedSize = EstimateCoinSize(radius);
+
+                   
+                    int won;
+                    switch (estimatedSize)
+                    {
+                        case 1:
+                            won = 10;
+                            break;
+                        case 2:
+                            won = 50;
+                            break;
+                        case 3:
+                            won = 100;
+                            break;
+                        case 4:
+                            won = 500;
+                            break;
+                        default:
+                            won = 0;
+                            break;
+                    }
+
+                    sumOfMoney += won;
+
+                   
+                    Cv2.PutText(dst, won + "won", new Point(cx - radius, cy), HersheyFonts.HersheyPlain, 0.75, new Scalar(255, 0, 0), 2, LineTypes.AntiAlias);
+                }
+            }
+
+          
+            Console.WriteLine($"{sumOfMoney}원");
+
+           
+            Cv2.ImShow("src", src);
+            Cv2.ImShow("dst", dst);
+
+          
+            Cv2.WaitKey();
+
+           
+            Cv2.DestroyAllWindows();
+        }
+
+        
+        static int EstimateCoinSize(int radius)
+        {
+            if (radius > 20)
+            {
+                if (radius > 50)
+                    return 4; 
+                else if (radius > 40)
+                    return 3; 
+                else
+                    return 2;
+            }
+            else
+            {
+                return 1; 
+            }
+        }
+    }
+}
