@@ -1,0 +1,221 @@
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Projectbeta
+{
+    public partial class Form1 : Form
+    {
+        private VideoCapture capture;
+        private Mat frame;            
+        private Mat processedFrame;  
+        private bool isRunning = false; 
+        private bool isColor = true;    
+        private CascadeClassifier faceCascade;
+        private CascadeClassifier eyeCascade;
+        private CascadeClassifier MouthCascade;
+
+        public Form1()
+        {
+            InitializeComponent();
+            faceCascade = new CascadeClassifier("haarcascade_frontalface_default.xml");
+            eyeCascade = new CascadeClassifier("haarcascade_eye.xml");
+            MouthCascade = new CascadeClassifier("mouth.xml");
+        }
+      
+        private void DetectAndDrawFaces(Mat frame)
+        {
+            using (Mat ugray = new Mat())
+            {
+                Cv2.CvtColor(frame, ugray, ColorConversionCodes.BGR2GRAY);
+                Cv2.EqualizeHist(ugray, ugray);
+
+                Rect[] faces = faceCascade.DetectMultiScale(
+                    ugray,
+                    1.1,
+                    5,
+                    0,
+                    new OpenCvSharp.Size(30, 30));
+
+                foreach (Rect face in faces)
+                {
+                    Cv2.Rectangle(frame, face, new Scalar(0, 0, 255), 2);
+                    //감정 분석 수행
+                    ProcessFaceImage(frame);
+                   
+                }
+            }
+        }
+        private void AnalyzeEmotion(Mat faceImage)
+        {
+            string[] emotions = { "Happy", "Sad", "Neutral" };
+
+           
+            Random random = new Random();
+            int randomEmotionIndex = random.Next(0, emotions.Length);
+            string randomEmotion = emotions[randomEmotionIndex];
+
+           
+            Cv2.PutText(faceImage, randomEmotion, new OpenCvSharp.Point(10, 10), HersheyFonts.HersheySimplex, 0.5, new Scalar(0, 255, 0), 2);
+        }
+        private void ProcessFaceImage(Mat faceImage)
+        {
+            AnalyzeEmotion(faceImage);
+        }
+        private void DetectAndDrawEyes(Mat frame)
+        {
+            using (Mat ugray = new Mat())
+            {
+                Cv2.CvtColor(frame, ugray, ColorConversionCodes.BGR2GRAY);
+                Cv2.EqualizeHist(ugray, ugray);
+
+                Rect[] eyes = eyeCascade.DetectMultiScale(
+            ugray,
+            1.1,
+            5,
+            0,
+            new OpenCvSharp.Size(10, 10));
+
+                foreach (var eye in eyes)
+                {
+                    OpenCvSharp.Point center = new OpenCvSharp.Point(eye.X + eye.Width / 2, eye.Y + eye.Height / 2);
+                    int radius = eye.Width / 2;
+                    Cv2.Circle(frame, center, radius, new Scalar(255, 0, 0), 2); 
+                }
+            }
+        }
+        private void DetectAndDrawMouth(Mat frame)
+        {
+            using (Mat ugray = new Mat())
+            {
+                Cv2.CvtColor(frame, ugray, ColorConversionCodes.BGR2GRAY);
+                Cv2.EqualizeHist(ugray, ugray);
+
+                Rect[] faces = MouthCascade.DetectMultiScale(
+                    ugray,
+                    1.1,
+                    5,
+                    0,
+                    new OpenCvSharp.Size(30, 30));
+
+                foreach (Rect face in faces)
+                {
+                    Cv2.Rectangle(frame, face, new Scalar(0, 255, 255), 2);
+                }
+            }
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            capture = new VideoCapture(0);  
+            frame = new Mat();
+            processedFrame = new Mat();  
+            capture.Set(VideoCaptureProperties.FrameWidth, 640);
+            capture.Set(VideoCaptureProperties.FrameHeight, 480); 
+        }
+
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            if (isRunning) 
+            {
+                isRunning = false;
+                button1.Text = "시작"; 
+                return;
+            }
+            button1.Text = "정지"; 
+            isRunning = true; 
+
+            while (isRunning)
+            {
+                if (capture.IsOpened())
+                {
+                    capture.Read(frame);
+                    if (!isColor)
+                    {
+                        Cv2.CvtColor(frame, frame, ColorConversionCodes.BGR2GRAY);
+                        Cv2.CvtColor(frame, frame, ColorConversionCodes.GRAY2BGR);
+                    }
+                    processedFrame = frame.Clone();
+                    DetectAndDrawFaces(processedFrame);
+                    DetectAndDrawEyes(processedFrame);
+                    DetectAndDrawMouth(processedFrame);
+                    //DetectAndSmileFaces(processedFrame);
+                    pictureBox1.Image = BitmapConverter.ToBitmap(processedFrame);
+                }
+                await Task.Delay(33);
+            }
+        }
+        private void CaptureAndSaveFace()
+        {
+            if (capture.IsOpened())
+            {
+                capture.Read(frame);
+                using (Mat ugray = new Mat())
+                {
+                    Cv2.CvtColor(frame, ugray, ColorConversionCodes.BGR2GRAY);
+                    Cv2.EqualizeHist(ugray, ugray);
+                    Rect[] faces = faceCascade.DetectMultiScale(
+                        ugray,
+                        1.1,
+                        5,
+                        0,
+                        new OpenCvSharp.Size(30, 30));
+                    if (faces.Length > 0)
+                    {
+                        Rect face = faces[0];
+                        Mat capturedFace = new Mat(frame, face);
+                        string fileName = GetUniqueFileName(@"C:\Temp\image\captured_face", ".jpg");
+                        capturedFace.SaveImage(fileName);
+                        pictureBox2.Image = BitmapConverter.ToBitmap(capturedFace);
+                        MessageBox.Show($"이미지가 성공적으로 저장되었습니다. 파일 경로: {fileName}", "저장 완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("얼굴을 검출할 수 없습니다.", "검출 실패", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+        }
+        private string GetUniqueFileName(string basePath, string extension)
+        {
+            int index = 1;
+            string fileName;
+            do
+            {
+                fileName = $"{basePath}_{index:D3}{extension}";
+                index++;
+            } while (File.Exists(fileName));
+
+            return fileName;
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            CaptureAndSaveFace();  
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            isRunning = false;  
+            capture.Release();  
+            this.Close();     
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+     
+
+       
+    }
+}
