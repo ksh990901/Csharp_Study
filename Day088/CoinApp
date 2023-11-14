@@ -1,0 +1,211 @@
+using OpenCvSharp;
+using OpenCvSharp.Extensions;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace CoinApp
+{
+    public partial class Form1 : Form
+    {
+        private VideoCapture capture;
+        private Mat frame;
+        private Mat processedFrame;
+        private bool isRunning = false;
+        private bool isColor = true;
+        private CascadeClassifier eyeCascade;
+
+        public Form1()
+        {
+            InitializeComponent();
+            eyeCascade = new CascadeClassifier("haarcascade_eye.xml");
+        }
+
+        private void DetectAndDrawEyes(Mat frame)
+        {
+            using (Mat ugray = new Mat())
+            {
+                Cv2.CvtColor(frame, ugray, ColorConversionCodes.BGR2GRAY);
+                Cv2.EqualizeHist(ugray, ugray);
+
+                Rect[] eyes = eyeCascade.DetectMultiScale(
+            ugray,
+            1.1,
+            5,
+            0,
+            new OpenCvSharp.Size(10, 10));
+
+                foreach (var eye in eyes)
+                {
+                    OpenCvSharp.Point center = new OpenCvSharp.Point(eye.X + eye.Width / 2, eye.Y + eye.Height / 2);
+                    int radius = eye.Width / 2;
+                    Cv2.Circle(frame, center, radius, new Scalar(255, 0, 0), 2);
+                }
+            }
+        }
+        private async void button1_Click(object sender, EventArgs e)
+        {
+            if (isRunning)
+            {
+                isRunning = false;
+                button1.Text = "시작";
+                return;
+            }
+            button1.Text = "정지";
+            isRunning = true;
+
+            while (isRunning)
+            {
+                if (capture.IsOpened())
+                {
+                    capture.Read(frame);
+                    if (!isColor)
+                    {
+                        Cv2.CvtColor(frame, frame, ColorConversionCodes.BGR2GRAY);
+                        Cv2.CvtColor(frame, frame, ColorConversionCodes.GRAY2BGR);
+                    }
+                    processedFrame = frame.Clone();
+                    //DetectAndDrawEyes(processedFrame);
+                    pictureBox1.Image = BitmapConverter.ToBitmap(processedFrame);
+                }
+                await Task.Delay(33);
+            }
+        }
+        static int EstimateCoinSize(int radius)
+        {
+            if (radius > 30)
+            {
+                if (radius > 50)
+                    return 4;
+                else if (radius > 40)
+                    return 3;
+                else
+                    return 2;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            capture = new VideoCapture(0);
+            frame = new Mat();
+            processedFrame = new Mat();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            isRunning = false;
+            capture.Release();
+            this.Close();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (processedFrame != null && !processedFrame.Empty())
+            {
+                pictureBox2.Image = BitmapConverter.ToBitmap(processedFrame);
+            }
+            else
+            {
+                MessageBox.Show("프레임이 존재하지 않습니다.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (pictureBox2.Image != null)
+            {
+                Bitmap bitmap = new Bitmap(pictureBox2.Image);
+                Mat src = BitmapConverter.ToMat(bitmap);
+                //Mat src = Cv2.ImRead("C:\\Temp\\image\\image\\7.png");
+
+                if (src.Empty())
+                {
+                    Console.WriteLine("이미지 로드 실패!");
+                    return;
+                }
+
+                Mat gray = new Mat();
+                Cv2.CvtColor(src, gray, ColorConversionCodes.BGR2GRAY);
+
+                Mat blr = new Mat();
+                Cv2.GaussianBlur(gray, blr, new OpenCvSharp.Size(0, 0), 1);
+
+                CircleSegment[] circles = Cv2.HoughCircles(
+                    blr,
+                    HoughModes.Gradient,
+                    1,
+                    50,
+                    param1: 150,
+                    param2: 40,
+                    minRadius: 20,
+                    maxRadius: 80
+                );
+
+                int sumOfMoney = 0;
+
+                Mat dst = src.Clone();
+
+                if (circles != null)
+                {
+                    foreach (var circle in circles)
+                    {
+                        int cx = (int)circle.Center.X;
+                        int cy = (int)circle.Center.Y;
+                        int radius = (int)circle.Radius;
+
+                        Cv2.Circle(dst, new OpenCvSharp.Point(cx, cy), radius, new Scalar(0, 0, 255), 2, LineTypes.AntiAlias);
+
+                        int estimatedSize = EstimateCoinSize(radius);
+
+                        int won;
+                        switch (estimatedSize)
+                        {
+                            case 1:
+                                won = 10;
+                                break;
+                            case 2:
+                                won = 50;
+                                break;
+                            case 3:
+                                won = 100;
+                                break;
+                            case 4:
+                                won = 500;
+                                break;
+                            default:
+                                won = 0;
+                                break;
+                        }
+
+                        sumOfMoney += won;
+
+                        Cv2.PutText(dst, won + "won", new OpenCvSharp.Point(cx - radius, cy), HersheyFonts.HersheyPlain, 0.75, new Scalar(255, 0, 0), 2, LineTypes.AntiAlias);
+                    }
+                }
+
+                MessageBox.Show($"분류된 동전의 합계: {sumOfMoney}원");
+
+                label1.Text = $"분류된 동전의 합계: {sumOfMoney}원";
+
+                Cv2.ImShow("src", src);
+                Cv2.ImShow("dst", dst);
+
+                Cv2.WaitKey();
+
+                Cv2.DestroyAllWindows();
+            }
+        }
+    }
+}
